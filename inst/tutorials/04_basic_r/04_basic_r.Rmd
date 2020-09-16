@@ -1,0 +1,526 @@
+---
+title: "Basics of R"
+subtitle: "Tutorial 04"
+author: "Psychology as a Science"
+output:
+  learnr::tutorial:
+    progressive: true
+runtime: shiny_prerendered
+css: css/paas_learnr.css
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+knitr::opts_chunk$set(echo = T)
+question <- function(..., randomise = T, retry = T) {
+  learnr::question(..., allow_retry = retry, random_answer_order = randomise)
+}
+
+# tsk <- 1
+# task <- function(x = tsk) {
+#   tsk <<- x + 1
+#   s_tsk <<- 1
+#   return(paste0("\\ \n\n", "#### Task ", x, "\n\n"))
+# }
+# subtask <- function(x = tsk - 1, y = s_tsk) {
+#   s_tsk <<- y + 1
+#   return(paste0("\\ \n\n", "##### Task ", x, ".", y, "\n\n"))
+# }
+```
+
+## Intro
+
+Welcome to PAAS tutorial number four.
+After learning about how computers work, familiarising ourselves with new software and discovering plain text editing, it is time to finally start talking about `R`.
+
+In this tutorial, you will learn the very basics of the `R` language and write your first `R` code.
+Exciting stuff, isn't it?!
+
+\ 
+
+## First steps
+
+### Calculator
+
+The best first step to getting on speaking terms with `R` is to treat it as a glorified calculator.
+`R` can perform essentially all mathematical operations.
+Here is a table of some of the simple ones along with examples of how to use them in `R`.
+
+| Operation | Maths notation | `R` Operator | Example |
+|:---------:|:--------------:|:------------:|:--------|
+| Addition  |     $+$        |      `+`     | `2 + 5` |
+| Subtraction |     $-$      |      `-`     | `1 - 10`|
+| Multiplication  | $\times$<br>$\cdot$ | `*`   | `5 * 4` |
+| Division  | $\div$<br>$/$<br>$\frac{a}{b}$ | `/`<br>(never `\`) | `100 / 3` |
+| Exponentiation | $x^n$ | `^` | `7^2` |
+| Square root |   $\sqrt{x}$ | `sqrt()` |`sqrt(9)`|
+
+
+While the goal of this module is to make you able to work in `R` using RStudio, we will start gently by playing in sandboxes. Use the box below to try doing some basic maths.
+
+For inspiration, here are some calculations you can ask `R` to run for you:
+
+- Add the numbers 4 and 17
+- Subtract 5.36 from 2 and then add 10
+- Multiply &minus;5 by 3.8
+- Divide 2000 by 30
+- Raise 10 to the power of 5
+- Take the square root of 2025
+
+
+```{r calc, exercise=TRUE}
+
+```
+
+<div id="calc-hint">
+Simply type in a command to perform a calculation and click on <span class="btn-success"><i class="fa fa-play"></i> Run code</span>.
+</div>
+
+As you can see, when you run a command, `R` will return the result of the command.
+
+\ 
+
+When doing maths, it's important to understand that **`R` follows the conventional order of operations**, also known in the UK and US as BODMAS or PEDMAS. If you are not familiar with this topic, we strongly encourage you to read up on it.
+
+For example, use the box to run these two commands and notice the difference in the output.
+
+```{r, eval=F}
+2 + 3 * 7
+(2 + 3) * 7
+```
+
+You can probably tell that that, in the first case, the multiplication took priority over the addition and so `R` first multiplied 3 by 7 and only then added 2 to the result. In the second case, however, the brackets indicated, that the addition should happen first and only then the result should be multiplied by 7.
+
+\ 
+
+
+Run the code in the box below.
+
+```{r syntax-error, exercise=TRUE, error=T}
+100 / (5 + 4
+```
+
+\ 
+
+### Errors
+
+Congratulations, you just experienced your first `R` error! &#x1F389;&#x1F37E;&#x1F973;
+
+Let's celebrate this occasion by setting some things straight:
+
+  - **Get used to errors; you will make a lot of them.** Like, a LOT of them. You are learning a completely new and highly formal language. If you can do it without making mistakes, you need to drop out and get a super-brainy job with one of them tech giants. Unless you are morally opposed to them, in which case, don't.
+  - Despite the error messages raging from unfamiliar to outright esoteric, **don't be scared of them**. Try to understand what went wrong. We all get errors. They are `R`'s way of telling you that it either didn't understand what you were telling it or that you did something that doesn't work.
+  - Unless you know exactly what you're doing, **you aren't going to break anything**. Experiment! Play around! Fiddle with code! It's the best way to get used to this weird new programming thing and learn `R`.
+
+\ 
+
+OK, with that out of the way, let's see what caused the error...
+
+If you read the error message, ignoring the numbers and symbols, you'll notice the "`unexpected end of input`" line. This message indicates a syntax error, `R`'s version of the "unexpected item in the bagging area" complaint. A syntax error basically means that `R` cannot parse what you said as a **complete and meaningful** command. It's a bit like saying "Please, pass me the." or "Is many Zimbabwe?" If someone told you that, you'd probably be left wondering what it is they want you to pass or whether or not you should call an ambulance. `R` won't do either of those; it will just ignore the command, throw you an error message and move on.
+
+Syntax errors are almost always caused by mismatched brackets (`()`s, `[]`s, or `{}`s), quotes (`'`s or `"`s) or misplaced commas. Each one of these symbols has its function in `R` and we will talk about each of them later. But remember that **all open brackets must be matched with corresponding closed brackets**.
+
+Armed with this knowledge, you should be able to fix the code so that it returns the correct value 11.111... Do it now.
+
+```{r syntax-error2, exercise=TRUE, error=T}
+100 / (5 + 4
+```
+
+```{r syntax-error2-solution}
+100 / (5 + 4)
+```
+
+\ 
+
+It may seam reasonable that, if we want `R` to do several calculations at the same time, we can simply string commands together, separating them with commas, like we did with clauses in this sentence.
+
+Try running the code below.
+
+```{r multi-error, exercise=TRUE, error=T}
+2^8, sqrt(10 * (-17 + 55))
+```
+
+### Multiple commands
+
+So that didn't work...
+
+The reason is that commas have a special function in `R` and it is *NOT* to separate commands.
+To run multiple commands in one go, you need to put them on separate lines. No commas are needed (nor allowed, in this case).
+
+Knowing this, fix the code above so that it runs.
+
+## Logical operations
+
+### \ {.empty}
+
+Besides maths, logical operations are another basic kind of things `R` (and programming languages in general) can do.
+These operations represent yes-or-no questions about all sorts of things and the result of them are just answers to these questions.
+
+For example, let's say we want to ask `R` if the code `5^2` returns the value of `25`.
+For this we would use the equality operator `==` (not `=`) to create a *logical expression*.
+Run the code below to see what happens.
+
+```{r equality, exercise=TRUE}
+5^2 == 25
+```
+
+
+### \ {.empty}
+
+The result of a logical expression is always a logical value, `TRUE` or `FALSE`, corresponding to "Yes" and "No", respectively.
+In this case, we asked `R` if `5^2` was equal to `25` and it said yes.
+If we asked as question to which the true answer is no, I would return the value `FALSE`.
+See for your self by equating two numbers or mathematical expressions that are not equal in the box below.
+
+```{r equality-false, exercise=TRUE}
+
+```
+
+### Logical operators in `R`
+
+The equality operator `==` is only one of several that `R` understands.
+Here are a few more:
+
+
+| Operator | Operation | `TRUE` Example | Comment |
+|:---:|:---|:---|:----------|
+|  `!=`    | not equal |  `1+1 != 3` | Returns the opposite (negation) of `==` |
+|  `>`     | greater than | `100 > 13` | Is the expression on the left-hand side (`lhs`) greater than the one on the right-hand (`rhs`)? |
+| `<` | less than | `51 < -34` | Is `lhs` less than `rhs`? |
+| `>=` | greater than OR equal to | `44 <= 22 * 2` | `TRUE` even if `lhs == rhs` |
+| `<=` | less than OR equal to | `44 >= 22 * 2` | Same as above |
+| `!` | not | `!(52 > 71)` | Negation; returns the opposite value of the following expression. |
+
+\ 
+
+### Connecting logical expressions
+
+Logical statements can be linked together, just like you can link Yes-or-No questions into a single sentence, such as "Is it me or is `R` pretty cool?". The badly-specified first statement aside, this is essentially a joint logical statement that is, essentially, a Yes-or-No question in its own right. OK, maybe not in natural language but in the language of formal logic, it is. Read on...
+
+There are three operators used to connect logical expressions:
+
+| Operator | Operation | `TRUE` Example | Comment |
+|:---:|:---|:---|:----------|
+|  `&`    | AND |  `(1 != 2) & (1 > -10)` | Returns `TRUE` only if **all** statements are `TRUE` |
+|  `|`     | OR | `(1 - 1 == 50) | (7 > 6)` | `TRUE` if **at least one** statement is `TRUE` |
+| `xor()` | exclusive OR<br>(XOR) | `xor(2 * 5 == 10, 2 * 5 != -10)` | Only `TRUE` if *exactly* one of two statements is `TRUE`.<br>Only joins two statements  |
+
+So, as you can see, a statements consisting of two or more partial joined with an `&` operator is `TRUE` only if all of the partial statements are `TRUE`. This corresponds to how we use "and" in natural language. For example, if someone said: "pulsars were discovered by [Jocelyn Bell](https://en.wikipedia.org/wiki/Jocelyn_Bell_Burnell) and she was not credited for this discovery in the 1974 Nobel Prize in Physics," you would expect that both parts of the sentence are true. If it turned out that one of them wasn't, you would probably think the person lied. For the record, both of these things really happened.
+
+On the contrary, the use of the logical OR differs from the way we use "or" in English. If your friend says: "I'm going to order pizza or pasta" you don't expect them to potentially order both. But a statement that combines clauses with `|` is `TRUE` if any or all of them are `TRUE`. So, our normal English "or" is more like the exclusive OR, or XOR. XOR only joins two statements and returns `TRUE` if either of them **but not both** are `TRUE`.
+
+Check out the table below for the so-called truth tables for the three operations.
+
+<div class="truth-tabs">
+<table class="truthtab table table-condensed">
+    <thead>
+        <tr>
+            <th rowspan=2 colspan=2 style="font-size:2em">&</th>
+            <th colspan=2>A</th>
+        </tr>
+        <tr>
+            <th>TRUE</th>
+            <th>FALSE</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan=2 class="head">B</td>
+            <td  class="head">TRUE</td>
+            <td>TRUE</td>
+            <td>FALSE</td>
+        </tr>
+        <tr>
+            <td class="head">FALSE</td>
+            <td>FALSE</td>
+            <td>FALSE</td>
+        </tr>
+    </tbody>
+</table>
+
+<table class="truthtab table table-condensed">
+    <thead>
+        <tr>
+            <th rowspan=2 colspan=2 style="font-size:2em">|</th>
+            <th colspan=2>A</th>
+        </tr>
+        <tr>
+            <th>TRUE</th>
+            <th>FALSE</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan=2 class="head">B</td>
+            <td  class="head">TRUE</td>
+            <td>TRUE</td>
+            <td>TRUE</td>
+        </tr>
+        <tr>
+            <td class="head">FALSE</td>
+            <td>TRUE</td>
+            <td>FALSE</td>
+        </tr>
+    </tbody>
+</table>
+
+<table class="truthtab table table-condensed">
+    <thead>
+        <tr>
+            <th rowspan=2 colspan=2 style="font-size:1.5em">xor()</th>
+            <th colspan=2>A</th>
+        </tr>
+        <tr>
+            <th>TRUE</th>
+            <th>FALSE</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan=2 class="head">B</td>
+            <td  class="head">TRUE</td>
+            <td>FALSE</td>
+            <td>TRUE</td>
+        </tr>
+        <tr>
+            <td class="head">FALSE</td>
+            <td>TRUE</td>
+            <td>FALSE</td>
+        </tr>
+    </tbody>
+</table>
+</div>
+
+### What is this for?
+
+If you're wondering at this stage what all of this is good for, this video will make things clearer.
+
+![](https://youtu.be/0ykLSZnHobo)
+([Click for transcript](https://docs.google.com/document/d/1ZKlETwUstXn5GBwUfJ8cPHxGwtjf2x-qSBhMe7DZsT4/edit?usp=sharing))
+
+
+Logical expressions pop up everywhere in programming, data processing and analysis so it's really important for you to understand them and to be comfortable working with them.
+
+Imagine you have collected data from participants for your study. Do you only want to look at the data for a subgroup of your sample based on, let's say age, first language, or eye colour? All of that is based on taking subsets of your data using logical statements, such as `age >= 18`, `language != "English"`, or `eye_colour == "green"`.
+
+Or maybe you have a spreadsheet with many columns but you only want to work with some of them? Logical expressions again.
+
+Different still, do you want to see how many of your participants declined to answer a particularly touchy question? Again, logical expressions!
+
+\ 
+
+## `R` syntax
+
+Let's look at out kettle-filling code again to highlight the basic principles of syntax -- the system in which things are put together -- in `R`.
+
+```{r, eval=F}
+tap.on() # turn the tap on
+
+# loop while condition is TRUE
+while ((get.kettle.content() < 500) & !is.kettle.full()) {
+  wait(600) # wait 600 milliseconds
+}
+
+tap.off() # turn the tap off
+```
+
+<div class="textbox">
+- Code runs **in sequence**. Except for loops and branches, all code es executed in a strictly linear way. In our exampl, once we hit the `while` loop, there is no way back to the `tap.on()` line. Also, if we reshuffled the order of the commands, the code would not work properly. For example moving the last line above the `while` loop:
+  
+  ```{r, eval=F}
+  tap.on() # turn the tap on
+  tap.off() # turn the tap off
+
+  # loop while condition is TRUE
+  while ((get.kettle.content() < 500) & !is.kettle.full()) {
+    wait(600) # wait 600 milliseconds
+  }
+  ```
+  
+  would result in an infinite loop. Because the water is not running when we enter the loop, the kettle will never fill up and the program will just get stuck forever. For a program to run correctly, it is crucial that every piece is in its right place.
+
+- A complete command should start on a new line.
+
+- A single command can be spread over several lines. For example, the `while` loop above is all a single command all the way to the final `}`. If we wanted, we could write it all on one line. However, putting it on multiple lines like this makes it more easily readable. The best places to break a command over several lines are:
+
+  - right after an opening bracket, `(`, `{`, or `[`
+  - right after a comma (more on those later)
+  - right before a closing bracket, `)`, `}`, or `]`
+  
+  If you pick one of these, the computer will understand that the command isn't complete yet and it should continue reading on the next line.
+  
+- There must be **no white spaces inside of names**. This is the reason for the dots in the names of our hypothetical functions, *e.g.,* `get.kettle.content()`. Writing it as `get kettle content()` is not legal in `R` (and most languages). In the same vein, you cannot put spaces within operators, such as `==`, `!=`, `<=`, `<-`, or `%>%`. We haven't mentioned the latter two yet but they are important so remember not to put spaces inside of them!
+
+- Round brackets/parentheses have two meanings:
+
+  1. They **signify functions and can include options**. Notice, that at the end of every function, there is a set of parentheses. If the function doesn't have any extra options, there is nothing inside of the brackets. For instance, the `tap.on()` is very simple, it just turns the tap on, and so there are no further options. The `wait()` function, however, require us to specify, how long we want the computer to wait, that's why we put the number of milliseconds inside of the brackets. We say that *the `wait()` function takes one required argument.* We will talk about functions and arguments more at a later stage.
+  2. They **explicitly specify the order of operations**. As you know, (2 + 5) &times; 7 is not the same as 2 + (5 &times; 7) and we can use parentheses in `R` in the same way we use them in maths. The same goes for logical expressions, `(get.kettle.content() < 500) & !is.kettle.full()` is not the same as `get.kettle.content() < (500 & !is.kettle.full())`. See for yourself! Run the code below, then change it to `get.kettle.content() < (500 & !is.kettle.full())` and try again:
+  
+  ```{r logic-brackets-setup, echo=F}
+  get.kettle.content <- function() 153
+  is.kettle.full <- function() FALSE
+  ```
+  
+  ```{r logic-brackets, exercise=T}
+  # let's say there's 153 ml of water in the kettle
+  # and kettle is not full
+  (get.kettle.content() < 500) & !is.kettle.full()
+  ```
+  
+  The specifics of why the second code got evaluated to `FALSE` are not important at this stage. Just remember that *brackets can modify the order of both arithmetic and logical operations*.
+
+- Curly braces `{}` denote a block of code that is to be evaluated together and they are mostly used in loops and conditional branches (for example, "if an expression is `TRUE`, do this, if it isn't do that...")
+
+- Apart from the strict requirement not to put white spaces inside of names, the use of white spaces doesn't matter in `R`. We can equally well write `1+2` and `1    +  2`. Using spaces reasonably, however, makes code more legible and is considered good practice.
+
+- `R` is *case-sensitive* so a lower-case and upper-case forms of the same letter are completely different things in its mind. `wait()` is not the same command as `Wait()` so watch out for typos!
+
+- We already know from the video, that everything to the right of a hash (`#`) is a comment. Comments are great for annotating and explaining what a given piece of code does. This makes it much easier to read and, because the computer ignores them when it's running code, there are no rules about how you must write them (they must start with `#` though).
+</div>
+
+There are not many things we would like you to memorise in this module but make sure you do memorise these syntax rules as well as a few more we will be adding in future tutorials.
+You will be saving yourself a lot of headache down the line!
+
+\ 
+
+## FYOK - Fill your own kettle
+
+### \ {.empty}
+
+Even though we can't use the code to actually fill up a kettle, we can simulate the process.
+The exercise box below is set up so that the code actually does something.
+Try running it to see what it does!
+
+```{r prepare-kettle, echo=F, eval=T}
+water_content <- 0
+delay <- 321
+iter <- 1
+get.kettle.content <- function() water_content
+is.kettle.full <- function() water_content >= kettle_capacity
+wait <- function(x) {
+  cat("\nLoop iteration ", sprintf("%02d", iter), " -------------------")
+  cat("\nCondition is TRUE: Waiting ", x, " milliseconds.")
+  for (i in 1:ceiling(x/20)) {
+    if (delay > 0) {
+      delay <<- delay - 20
+      Sys.sleep(.02)
+    } else {
+      water_content <<- water_content + 4
+      Sys.sleep(.02)
+    }
+  }
+  iter <<- iter+1
+  cat("\nWater content in kettle:  ", water_content, "ml\n")
+}
+tap.on <- function() {
+  if (!all(is.numeric(kettle_capacity), is.numeric(water_needed), is.numeric(wait_time)) |
+      any(kettle_capacity < 0, water_needed < 0, wait_time < 0)) {
+    stop("Error: kettle_capacity, water_needed, and wait_time must all be positive numbers. Good job trying to break things though! :)", call. = F)
+  } else message("Tap is on.")
+}
+tap.off <- function() {
+  cat("\nLoop iteration ", sprintf("%02d", iter), " -------------------\n")
+  if (is.kettle.full()) {
+    cat("### Condition is FALSE: Kettle is full! ###")
+    } else if (water_content >= 500) cat("### Condition is FALSE:", water_needed, "ml or more water poured! ###")
+  cat("\nTap is off.\nThere is ", water_content, "ml of water in the kettle.")
+}
+```
+
+
+```{r kettle-fill, exercise=T, exercise.setup = "prepare-kettle", results='hold'}
+kettle_capacity <- 400 # capacity of the kettle
+water_needed <- 500 # water needed, kettle capacity allowing
+wait_time <- 600 # how many milliseconds to wait()
+
+tap.on() # turn the tap on
+
+# loop while condition is TRUE
+while ((get.kettle.content() < water_needed) & !is.kettle.full()) {
+  wait(wait_time) # wait for wait_time ms
+}
+
+tap.off() # turn the tap off
+```
+
+### \ {.empty}
+
+As you can see the code printed out what happened in a step-by-step fashion.
+If you watched the video towards the bottom of the [Logical operations][Logical operations] section, the output of the code should be pretty clear.
+
+Notice a few differences between the code in the video and the one in the exercise box.
+There are three new lines at the very top of the code block that weren't there before:
+
+```{r, eval=F}
+kettle_capacity <- 400 # capacity of the kettle
+water_needed <- 500 # water needed, kettle capacity allowing
+wait_time <- 600 # how many milliseconds to wait()
+```
+
+These three lines set the capacity of the kettle to be 400 ml, set the amount of water we need to be 500 ml (unless the kettle is smaller), and set the waiting time to 600 milliseconds.
+
+The `<-` is the **assignment operator** and it is one of the most important operators in `R`.
+It assigns a name to whatever is to the right of it. You can picture it as an arrow pointing from a command to a name saying: "take this and give it a name".
+The result of this assignment operation is that now, the computer knows that under the name `kettle_capacity`, there is the value `400`.
+In other words, **we created an "object" `kettle_capacity` containing the value `400`.**
+Once we did this, we can just use the name as a stand-in for the actual value. We did something similar in the tea-aking algorithm in the video to Tutorial 01, when we created a variable "receptacle" that could stand for either mug or glass, depending on what we could find in the cupboard.
+
+As you can see, we use two of these objects in the `while` loop:
+
+```{r, eval=F}
+while ((get.kettle.content() < water_needed) & !is.kettle.full()) {
+  wait(wait_time)
+}
+```
+
+So, instead of saying `wait(600)`, we say `wait(waiting_time)`.
+This makes the computer look for the object with the name `waiting_time`, look what value is inside, and then use the value as the required argument to the `wait()` function to decide how many milliseconds it should wait.
+Whatever value is stored under that name will get used.
+Of course, it must be a positive number!
+
+The benefit of assigning these **parameters of our system** to names in this way is that you can now easily change them by changing the numbers.
+
+\ 
+
+**Try changing the kettle capacity to something more than 500 and run the code again.**
+
+### \ {.empty}
+
+Notice that the code now took more iterations to finish because we were pouring in more water.
+At the same time, the reason why the code stopped changed from teh kettle being gull to enough water being poured in it.
+
+
+**Take a minute to play around with the values of the three parameters to see how they affect the code.**
+
+## Summary
+
+You learnt quite a lot in this tutorial.
+
+In particular, you:
+
+- used `R` to do basic maths and learned the six basic arithmetic operators (`+`, `-`, `*`, `/`, `^`, and `sqrt()`)
+- learnt that errors are not to be feared
+- found out about logical expressions and operators (`<`, `>`, `<=`, `>=`, `==`, `!=`, `!`, `&`, `|`, `xor()`)
+- saw how logical expressions are used in programming
+- learnt the basic rules of `R` syntax:
+  - Code gets evaluated line by line from the top down. There's no jumping back.
+  - No white spaces in names are allowed.
+  - All types of brackets (`(`, `{`, `[`) have their meaning.
+  - A command should start on a new line...
+  - ...but can span multiple lines.
+  - `R` is case-sensitive.
+  - Everything to the right of `#` is a comment.
+- discovered the assignment operator `<-`
+- learnt how to assign values to names.
+
+\ 
+
+**Your final task is to create a Week_04 RStudio project in your paas folder.**
+
+\ 
+
+<big>Well done!</big>
+
+\ 
+
+
