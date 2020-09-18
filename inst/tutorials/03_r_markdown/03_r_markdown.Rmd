@@ -202,6 +202,9 @@ The same goes for every lecture.
 
 **10. Admire how pretty the output is!**
 
+**11. Finally, get a picture of you that you like and save it in a `"images"` folder inside of the `"week_03"` project folder.**
+You will use it in the practical.
+
 \ 
 
 That's all for this tutorial.
