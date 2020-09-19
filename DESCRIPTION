@@ -10,15 +10,23 @@ Description: This package contains the learnR tutorials for the Psychology
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.1
-Suggests: 
-    learnr
 Imports: 
+    learnr
     gradethis (>= 0.1.0.9004),
     dplyr,
     palmerpenguins,
-    magrittr
+    magrittr,
+    tibble,
+    readr,
+    tidyr,
+    purrr,
+    here,
+    red (>= 0.1.0),
+    blue (>= 0.1.0)
 Remotes: 
-    rstudio-education/gradethis
+    rstudio-education/gradethis,
+    ljcolling/red,
+    ljcolling/blue
+RoxygenNote: 7.1.1
 Depends: 
     R (>= 2.10)
