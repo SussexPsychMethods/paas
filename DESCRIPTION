@@ -12,7 +12,6 @@ Encoding: UTF-8
 LazyData: true
 Imports: 
     gradethis (>= 0.1.0.9004),
-    dplyr,
     palmerpenguins,
     magrittr,
     tibble,
@@ -21,8 +20,7 @@ Imports:
     purrr,
     here,
     red (>= 0.1.0),
-    blue (>= 0.1.0),
-    learnr
+    blue (>= 0.1.0)
 Remotes: 
     rstudio-education/gradethis,
     ljcolling/red,
