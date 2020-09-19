@@ -11,7 +11,6 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: 
-    learnr
     gradethis (>= 0.1.0.9004),
     dplyr,
     palmerpenguins,
@@ -22,7 +21,8 @@ Imports:
     purrr,
     here,
     red (>= 0.1.0),
-    blue (>= 0.1.0)
+    blue (>= 0.1.0),
+    learnr
 Remotes: 
     rstudio-education/gradethis,
     ljcolling/red,
