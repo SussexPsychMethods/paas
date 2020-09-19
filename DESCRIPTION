@@ -12,8 +12,8 @@ Encoding: UTF-8
 LazyData: true
 Imports: 
     gradethis (>= 0.1.0.9004),
+    dplyr,
     palmerpenguins,
-    magrittr,
     tibble,
     readr,
     tidyr,
