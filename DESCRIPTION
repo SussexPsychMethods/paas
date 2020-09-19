@@ -13,6 +13,7 @@ LazyData: true
 Imports: 
     gradethis (>= 0.1.0.9004),
     dplyr,
+    magrittr,
     palmerpenguins,
     tibble,
     readr,
