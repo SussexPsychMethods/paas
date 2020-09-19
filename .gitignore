@@ -3,4 +3,4 @@
 .RData
 .Ruserdata
 .DS_Store
-utils_*.sh
+util_*.sh
