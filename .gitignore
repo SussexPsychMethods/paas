@@ -9,5 +9,6 @@ inst/tutorials/06_functions_packages/06_functions_packages.html
 inst/tutorials/06_functions_packages/images/.DS_Store
 inst/tutorials/07_organizing_data/.DS_Store
 inst/tutorials/07_organizing_data/.gitignore
+inst/tutorials/07_organizing_data/build.sh
 inst/tutorials/07_organizing_data/watch-start.sh
 man/.DS_Store
