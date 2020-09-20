@@ -1,5 +1,7 @@
 ---
 title: "Reading and organizing data"
+subtitle: "Tutorial 07"
+author: "Psychology as a Science"
 output: 
   learnr::tutorial:
     css: "css/paas_learnr.css"
@@ -52,7 +54,7 @@ By the end of this tutorial you should be able to:
 
 For most of this tutorial we'll be using a dataset that contains data from 10 people performing a [Stroop task](https://en.wikipedia.org/wiki/Stroop_effect). When preforming the Stroop task participants have their response times measured under two conditions—the *congruent* condition and the *incongruent* condition. This means that for each of the 10 people we'll have two measurements—the response time in the congruent condition and their response time in the incongruent condition. Each person will also have an identification (ID) code. 
 
-<img src="www/schematic.svg" width="400" style="float:right"/>
+<img src="www/schematic.png" width="400" style="float:right"/>
 
 #### Data description 
 

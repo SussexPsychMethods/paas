@@ -1,5 +1,7 @@
 ---
 title: "Functions and packages"
+subtitle: "Tutorial 06"
+author: "Psychology as a Science"
 output: 
   learnr::tutorial:
     progressive: true
@@ -32,10 +34,6 @@ install.packages <- function(x){
   return(glue::glue("{x} installed..."))
 }
 
-```
-
-```{css}
-code { font-size: 1em;} /* fix issue with headings */
 ```
 
 ## About this tutorial
