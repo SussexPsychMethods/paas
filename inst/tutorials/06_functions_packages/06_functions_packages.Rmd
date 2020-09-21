@@ -1,5 +1,7 @@
 ---
 title: "Functions and packages"
+subtitle: "Tutorial 06"
+author: "Psychology as a Science"
 output: 
   learnr::tutorial:
     progressive: true
@@ -34,10 +36,6 @@ install.packages <- function(x){
 
 ```
 
-```{css}
-code { font-size: 1em;} /* fix issue with headings */
-```
-
 ## About this tutorial
 
 In this tutorial we will learn about **functions** and **packages** in `R`. By the end of this tutorial you will:
@@ -55,19 +53,19 @@ In this tutorial we will learn about **functions** and **packages** in `R`. By t
 
 ### A simple function
 
-Let's imagine you've just moved into your first share-house. One month the electricity bill arrives. The bill is £40, and you and your 3 house-mates decide that you will split it evenly between all the people in the house. This means you will pay £10. By doing this, you've just used a function!
+Let's imagine you've just moved into your first share-house. One month the electricity bill arrives. The bill is £40, and you and your 3 house-mates decide that you will split it evenly between all the people in the house. This means you will pay £10 each. By working this out you've just used a function!
 
-What are the inputs, output, and the rule for relating the inputs to the outputs?
+What are the inputs, output, and the rule for relating the inputs to the output?
 
 We'll start with the **output**. The **output** is £10 each. How much each of you will pay towards the power bill. 
 
 What are the **inputs**? There are two inputs: 1) the £40 for the total power bill, and 2) the number of people in the house (4 in this case).
 
-And the rule that relates the **inputs** to the **outputs**? The rule is just to *take the total bill and divide it by the number of house mates*. 
+And the rule that relates the **inputs** to the **output**? The rule is just to *take the total bill and divide it by the number of house mates*. 
 
 ### Functions in `R`
 
-Functions in `R` are no different to our verbal example above. The only difference is that they're written done in some computer code. We won't be writing functions ourselves in this, but we will be using them.
+Functions in `R` are no different to our verbal example above. The only difference is that they're written down in some computer code. We won't be writing functions ourselves in this course, but we will be using them.
 
 
 - All functions in `R` have a **function name**. In the example below the **function name** is `split_power_bill`. 
@@ -78,12 +76,12 @@ Functions in `R` are no different to our verbal example above. The only differen
 
 - The inputs always follow the function name and are wrapped in round brackets `()`. Some special functions don't actually require any inputs, but even when that's the case you still need to use the `()`. You just leave them empty!
 
-- Finally, the function will produce some **output**. In the example below, the output is being saved in a **variable** called `each_person_share`. If we didn't assign the output to a variable the it would just write out at the console. Outputs can **either go to the console or a be assigned to a variable**. This means that if you've assigned the output to a variable you won't see anything. You can see an example of this in the code below.
+- Finally, the function will produce some **output**. In the example below, the output is being saved in a **variable** called `each_person_share`. If we didn't assign the output to a variable then it would be printed out at the console. Outputs can **either go to the console or be assigned to a variable**. This means that if you've assigned the output to a variable you won't see anything. You can see an example of this in the code below.
 
 <img src="images/a_function.png" width="100%"></img>
 
 
-Now that you know the parts of a function, take a look at the code example below. Run the code to see what happens! Notice on **line 2** the name of the output variable is written again so that contents of the variable is printed out. Try changing the values for the input labelled `number_of_people` and `}total_cost` and see how the output changes. The output always changes in accordance with the inputs and our rule (*divide the total cost by the number of people*).
+Now that you know the parts of a function, take a look at the code example below. Run the code to see what happens! Notice on **line 2** the name of the output variable is written again so that the contents of the variable is printed out. Try changing the values for the input labelled `number_of_people` and `total_cost` and see how the output changes. The output always changes in accordance with the inputs and our rule (*divide the total cost by the number of people*).
 
 ```{r example_function, exercise=TRUE, exercise.cap="Example"}
 each_person_share <- split_power_bill(number_of_people = 4, total_cost = 40)
@@ -146,7 +144,7 @@ In this example, we are calling the function called `say_hello()`. It has one in
 Try changing the input to your own name... or any other value.
 
 ```{r string_example, exercise=TRUE}
-say_hello(a_letter_string = "Lincoln")
+say_hello(a_letter_string = "Spartacus")
 ```
 
 #### Numbers as inputs
@@ -178,9 +176,9 @@ describe_input(input_variable = a_different_variable)
 
 ### Named and unnamed inputs
 
-In all the example above the arguments had names For example, for the `describe_input()` function, the input was named `input_variable`. Most, but not all, functions have named inputs. The main function you'll come across that does not have named input is the `here()` function. 
+In all the examples above, the arguments had names For example, for the `describe_input()` function, the input was named `input_variable`. Most, but not all, functions have named inputs. The main function you'll come across that does not have named inputs is the `here()` function (don't worry about what the `here()` function does for now, because we'll cover it in more detail next time). 
 
-When a function **does not** have named inputs then you just write input value in the `()` without including an input name or the `=`. Below is an example of using the `here()` function without an input label. 
+When a function **does not** have named inputs then you just write the input value in the `()` without including an input name or the `=`. Below is an example of using the `here()` function without an input label. 
 
 ```{r function_no_label, exercise=TRUE}
 here("data")
@@ -190,7 +188,7 @@ In the examples above whenever we've used a function with **named inputs** we've
 
 ### Functions with multiple inputs  
 
-For most the examples we've looked at we only gave one input to the function. However, if you look back at the `split_power_bill()` example you'd have seen an example of a function that takes multiple inputs. If we have a function that takes multiple inputs then we can specify the inputs in any order as long as we name the inputs. Try running the two examples below. Notice that the inputs in the two examples are specified in different order but the output in both are the same.
+For most of the examples we've looked at we only gave one input to the function. However, if you look back at the `split_power_bill()` example you'd have seen an example of a function that takes multiple inputs. If we have a function that takes multiple inputs then we can specify the inputs in any order as long as we name the inputs. Try running the two examples below. Notice that the inputs in the two examples are specified in different order but outputs are the same.
 
 ```{r order_example1, exercise=TRUE, exercise.cap="Example 1"}
 split_power_bill(number_of_people = 10, total_cost = 100)
@@ -200,7 +198,7 @@ split_power_bill(number_of_people = 10, total_cost = 100)
 split_power_bill(total_cost = 100, number_of_people = 10)
 ```
 
-We can also leave the input names out and the function call will still produce an output. Run the example below to see and example. 
+We can also leave the input names out and the function call will still produce an output. Run the code below to see an example.
 
 ```{r order_example3, exercise=TRUE, exercise.cap="Example 3"}
 split_power_bill(40,400)
@@ -233,7 +231,7 @@ split_power_bill()
 
 <img src="images/packages.png" width="100%"></img>
 
-**Packages** are add-ons that you can install to extended the functionality of `R`. **Packages** are groups of *functions* that have been *packaged* together in collections. Almost all the functions you'll use in `R` are part of a **package**.  
+**Packages** are add-ons that you can install to extend the functionality of `R`. **Packages** are groups of *functions* that have been *packaged* together in collections. Almost all the functions you'll use in `R` are part of a **package**.  
 
 `R` comes with a number of packages pre-installed, but by installing new packages you'll be able to do things like do new kinds of **analyses**, draw new kinds of **plots**, or **work with data** in new ways. 
 
@@ -247,7 +245,7 @@ Before you can **use** a **package** you'll need to **install** it on your compu
 
 ### Installing a package from CRAN
 
-`R` comes with a special function from installing a package from **CRAN**. This function is called `install.packages()`. The `install.packages()` only takes one **argument**—the **name of the package** you want to install. 
+`R` comes with a special function from installing a package from **CRAN**. This function is called `install.packages()`. The `install.packages()` function only takes one **argument**—the **name of the package** you want to install. 
 
 In this example you can see `install.packages()` being used to install a package called **here**. 
 
@@ -257,7 +255,7 @@ install.packages("here")
 
 The `install.packages()` function is only used once per package (per computer), so usually you'll just type the command into the **console window** in **R Studio**. 
 
-**Helpful hint**: It is pretty easy to just type the `install.packages()` command into the console window, but you **must make sure you spell the package name correctly!** If you don't spell the package name correctly, then it won't install. If you're having trouble, then you can also use the menu. To install using the menu go to:
+**Helpful hint**: It is pretty easy to just type the `install.packages()` command into the console window, but you **must make sure you spell the package name correctly!** If you don't spell the package name correctly, then it won't install. If you're having trouble, then you can also use the menu. To install a package using the menu go to:
 
 - Tools > Install Packages... 
 
@@ -266,7 +264,7 @@ Installing through the menu will *auto-complete* the package name.
 
 ### Installing packages not on CRAN
 
-Sometimes in this course you'll be asked to install a package that ins't on CRAN. This will usually happen when you're asked to install a package that has been developed by one of the lectures at **Sussex**. 
+Sometimes in this course you'll be asked to install a package that isn't on CRAN. This will usually happen when you're asked to install a package that has been developed by one of the lectures at **Sussex**. 
 
 To install these packages, you'll first need to install another package! This package is called **remotes**. Using the previous example as a guide, see if you can complete the command to install the **remotes** package. 
 
@@ -294,7 +292,7 @@ gradethis::grade_result(
 ```
 
 
-Once the **remotes** package has been installed, you can install packages using the `remotes::install_github()` command. I haven't yet mentioned what the `::` in a command means But don't worry, it's explained below...
+Once the **remotes** package has been installed, you can install packages using the `remotes::install_github()` function. I haven't yet mentioned what the `::` in a command means But don't worry, it's explained below...
 
 
 ### Loading packages
@@ -324,7 +322,7 @@ library("psychscience")
 
 It sometimes happens that you have two **different** functions that have the **same name** but are part of **different packages**.
 
-When this happens, `R` can behave unpredictably because now that one function name could refer to two different functions. We'll take a look at this with an example. 
+When this happens, `R` can behave unpredictably because now one function name could refer to two different functions. We'll take a look at this with an example. 
 
 There are two packages: One is called `red` and the other is called `blue`. These are simple packages that only contain one function. Each of them has a function  called `saycolour()`. The `saycolour()` function just prints out whether it is the **saycolour** function from the `red` package, or the **saycolour** function from the `blue` package. 
 
@@ -360,19 +358,19 @@ saycolour()
 
 ```
 
-You'll see that `R` prints out a little warning messaging starting with the phrase `The following object is masked from ...`. This warning message lets you know that you have load 2 packages that both have a `saycolour()` function. 
+You'll see that `R` prints out a little warning messaging starting with the phrase `The following object is masked from ...`. This warning message lets you know that you have loaded 2 packages that both have a `saycolour()` function. 
 
 Now look at the output below the warning. You'll see that the output corresponds to what you would expect if only the second package was loaded! The second package **masks** the first package.
 
-This **masking** can be a problem, because you won't always remember what order you loaded our packages in. Sometimes you might not even realise that you've loaded two packages with overlapping function names! 
+This **masking** can be a problem, because you won't always remember what order you loaded our packages in. Sometimes you might miss the warning message and not even realise that you've loaded two packages with overlapping function names! 
 
 #### Functions **from** specific packages
 
-**Masking** and function name conflicts can be very annoying! But there is a simple way to avoid them forever. This is to always specify the **package name** together with the **function name**. I will also use this style in the tutorials, because it will help to learn which functions come from which packages. 
+**Masking** and function name conflicts can be very annoying! But there is a simple way to avoid them forever. This is to always specify the **package name** together with the **function name**. I will also use this style in the tutorials, because it will help you learn which functions come from which packages. 
 
-To specify the **package name** you just write `packagename::` before the function call. When do you this, it doesn't matter what order you load the packages. You'll always get the function from the package you want. Take a look at the two example below to see it at work. 
+To specify the **package name** you just write `packagename::` before the function call. When do you this, it doesn't matter what order you load the packages. You'll always get the function from the package you want. Take a look at the two examples below to see it at work. 
 
-In this example we'll load `blue` and then `red`, but we'll use the `saycolour()` function from `blue` first.
+In this example we'll also load `blue` and then `red`, but we'll use the `saycolour()` function from `blue` first.
 
 ```{r function_clash4-setup}
 detach("package:blue",TRUE) # unload the blue package
@@ -417,7 +415,7 @@ fake_function(input = "test")
 fake_package::fake_function(input = "test")
 ```
 
-The first error message tells you the function isn't available. But how do you fix it?
+The first error message tells you that the function isn't available. But how do you fix it?
 
 The second error message tells you something about the package that the function is part of. It tells you the package isn't available. This gives you a hint on how to fix the problem... by installing the missing package!
 

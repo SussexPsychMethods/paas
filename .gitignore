@@ -1,2 +1,14 @@
 .DS_Store
 .Rproj.user/
+R/.DS_Store
+inst/tutorials/.DS_Store
+inst/tutorials/04_basic_r/.DS_Store
+inst/tutorials/05_objects_functions_data/.DS_Store
+inst/tutorials/06_functions_packages/.DS_Store
+inst/tutorials/06_functions_packages/06_functions_packages.html
+inst/tutorials/06_functions_packages/images/.DS_Store
+inst/tutorials/07_organizing_data/.DS_Store
+inst/tutorials/07_organizing_data/.gitignore
+inst/tutorials/07_organizing_data/build.sh
+inst/tutorials/07_organizing_data/watch-start.sh
+man/.DS_Store
