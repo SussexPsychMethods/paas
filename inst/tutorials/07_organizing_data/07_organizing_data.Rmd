@@ -17,8 +17,7 @@ library(tidyr)
 library(readr)
 library(gradethis)
 
-knitr::opts_chunk$set(echo = FALSE)
-knitr::opts_chunk$set(exercise.checker = gradethis::grade_learnr)
+knitr::opts_chunk$set(exercise.checker = gradethis::grade_learnr, exercise.warn_invisible = FALSE)
 
 # make some fake stroop data that will be added to package
 stroop_wide <- tibble(
@@ -41,18 +40,17 @@ code { font-size: 1em;} /* fix issue with headings */
 
 ## About this tutorial
 
-In this tutorial we are going to cover how to organise our data and how to read that data into `R`. In the first half of the tutorial we'll cover the basics of how data is organized including how data is organized in tables, how columns should be named, and what rows and columns should represent. In the second half of the tutorial we'll cover how to get that data into the computer and how to read it in to `R`.
+In this tutorial we are going to cover how to organise our data and how to read that data into `R`. In the first half of the tutorial we'll cover the basics of how data is organized  in tables, how columns should be named, and what rows and columns should represent. In the second half of the tutorial we'll cover how to read data in to `R`.
 
 By the end of this tutorial you should be able to:
 
 - Recognize the **tidy** and **messy** data formats
 - Organize data in the **tidy** format
-- Use `here::here()` to give directions to a file
 - Use `readr::read_csv()` to import data from a file
 
 ### The data
 
-For most of this tutorial we'll be using a dataset that contains data from 10 people performing a [Stroop task](https://en.wikipedia.org/wiki/Stroop_effect). When preforming the Stroop task participants have their response times measured under two conditions—the *congruent* condition and the *incongruent* condition. This means that for each of the 10 people we'll have two measurements—the response time in the congruent condition and their response time in the incongruent condition. Each person will also have an identification (ID) code. 
+For most of this tutorial we'll be using a dataset that contains data from 10 people that have performed a [Stroop task](https://en.wikipedia.org/wiki/Stroop_effect). When preforming the Stroop task participants have their response times measured under two conditions—the *congruent* condition and the *incongruent* condition. This means that for each of the 10 people we'll have two measurements—the response time in the congruent condition and their response time in the incongruent condition. Each person will also have an identification (ID) code. 
 
 <img src="www/schematic.png" width="400" style="float:right"/>
 
@@ -68,7 +66,7 @@ We have a total of **10 people**. Each person has:
 
 This means we have a total of **30** bits of information that we need to organise in a table!
 
-In the first section we'll take a look at the different ways in which we can organise this data. 
+Let's take a look at different ways to organise this data.
 
 
 ## Organizing our data
@@ -77,7 +75,7 @@ There are two main approaches for organizing data in tables. These are 1) **wide
 
 ### Messy data
 
-As the name suggests, when data is organised in **wide** format the data tables tend to be very wide! This happens because **wide** data uses **columns** to give data table their structure. Let us take a look at some data organised in wide format.
+As the name suggests, when data is organised in **wide** format the data tables tend to be very wide! This happens because **wide** data uses **columns** to give data table its structure. Let us take a look at some data organised in wide format.
 
 Run the example below to print our Stroop data organised in the **wide** format.
 
@@ -85,11 +83,11 @@ Run the example below to print our Stroop data organised in the **wide** format.
 stroop_wide
 ```
 
-As you can see, when our data is organised in **wide** format we have three (3) columns: One (1) for each bit of information we have about each person. The `id` column has their ID code. The `congru` column has their response time for the congruent condition. And the `incongru` column has their response time for the incongruent condition. 
+As you can see, when our data is organised in **wide** format we have three columns: One for each bit of information we have about each person. The `id` column has their ID code. The `congru` column has their response time for the congruent condition. And the `incongru` column has their response time for the incongruent condition. 
 
-The data table also has ten (10) rows. One rows for each person in our dataset. 
+The data table also has ten rows. One row for each person in our dataset. 
 
-The key detail here is that when data is organised in wide format, all the data from participant lives in a single row and columns give the data it's structure. 
+The key detail here is that when data is organised in wide format, all the data from a participant lives in a single row and columns are used for holding different measurements. 
 
 ### Tidy data
 
@@ -103,17 +101,14 @@ stroop_long
 
 If we look at our new data set we'll see that we now have twice as many rows. Before we only had 10 rows and now we have 20 rows! 
 
-In contrast to the **messy** format where **all the measurements** from a participant go into a single row, the **tidy** format organises data so that **each measurement is on it's own row**. This means that that rather than **one row per participant**  the **tidy** could possibly have many many rows per participant. 
+In contrast to the **messy** format where **all the measurements** from a participant go into a single row, the **tidy** format organises data so that **each measurement is on it's own row**. This means that rather than **one row per participant** the **tidy** data could possibly have many rows per participant. 
 
-The way the data is structured is also very different. In the **messy** format data is organised **by participant** but in the **tidy** format data is organised **by measurement**. And instead of *using columns to hold different measurements*, the tidy format *uses columns to hold information about a measurement*. The `value` column now holds the measurement. The `condition` columns says which condition that measurement comes from. And the `id` column says which person that measurement comes from.
+The way the data is structured is also very different. In the **messy** format data is organised **by participant** but in the **tidy** format data is organised **by measurement**. And instead of *using columns to hold different measurements*, the tidy format *uses columns to hold information about a measurement*. The `value` column now holds the measurement itself. The `condition` columns says which condition that measurement comes from. And the `id` column says which person that measurement comes from.
 
 In the **tidy** format, the columns are also referred to a **variables**. So we can say: "The `id` variable holds the participant identifiers", or "the `condition` variable holds the condition identifiers". You'll see that using the term "variable" makes sense, because the same rules that apply to naming ordinary variables in `R` also applies to naming columns and, in later tutorials, we'll be interacting with columns in much the same way that we interact with ordinary variables.  
 
 In the **tidy** format, the rows are also referred to as **observations**. Again, this makes sense because **observation** is just synonym for *a measurement*.
 
-The figure below will help you to understand how **tidy data** should be organized. 
-
-<<Insert image here>>
 
 ### Test your knowledge
 
@@ -132,24 +127,24 @@ question("Which option best describes the **tidy** data format",
 ```
 
 
-
-```{r tidy2}
+<!--
+//```{r tidy2}
 # Which of the two displays show an example of tidy data 
-```
+//```
  
 
-```{r tidy3}
+//```{r tidy3}
 # Looking at the data above, how is it organized?
-```
-
+//```
+-->
 
 ## Naming columns
 
-In the practical classes you'll get a chance to manually enter some data into a Google sheet. We'll then import this data into `R`. But before we can actually start entering in data we need to learn a few rules and conventions about, for example, naming columns and handling missing data. That's the topic of this section! Some of this might seem a bit abstract, but stick with it because you get to actually doing it then these rules and conventions will really help.
+In the practical classes you'll get a chance to manually enter some data into a Google sheet. We'll then import this data into `R`. But before we can actually start entering in data we need to learn a few rules and conventions about, for example, naming columns and handling missing data. That's the topic of this section! Some of this might seem a bit abstract, but stick with it because when you get to actually doing it then these rules and conventions will really help.
 
 ### Rules for naming columns 
 
-Just like when naming other kinds of **variables** there are a few special for naming **columns**. We only really have to worry about the two most important ones:
+Just like when naming other kinds of **variables** there are a few special rules for naming **columns**. We only really have to worry about the two most important ones:
  
 1. Column names can not contain spaces
 
@@ -159,18 +154,17 @@ You have to follow the rules or `R` won't work properly!
 
 In addition to the rules, there are also some conventions that you should follow.
 
-### Conventions and best practices
 
-- Because you can't use spaces in column names one of the conventions is to use snake_case instead! Snake case just means that you replace spaces with **underscores** i.e, the `_` symbol
+3. Because you can't use spaces in column names one of the conventions is to use snake_case instead! Snake case just means that you replace spaces with **underscores** i.e, the `_` symbol
 
-- You should try and balance informativeness and length for you column names. Make your column names long enough to be informative, but not so long that they'll take ages to type!
+4. You should try and balance informativeness and length for your column names. Make your column names long enough to be informative, but not so long that they'll take ages to type!
 
-<!-- think about other things 
+
 
 ### Missing data
 
-Missing data is handled in `R` in a special way. `R` using `NA` to represent data that is missing. When you're entering data, and you plan to read that data into `R` later, the best way to handle missing data is just to not enter anything! This might seem like a silly thing to mention, but in the past (and something still today) people used to enter `99` for a measurement whenever the value was missing. Don't be tempted to do this!
--->
+Missing data is handled in `R` in a special way. `R` uses `NA` to represent data that is missing. When you're entering data, and you plan to read that data into `R` later, the best way to handle missing data is just to not enter anything! This might seem like a silly thing to mention, but in the past (and something still today) people used to enter `99` for a measurement whenever the value was missing. Don't be tempted to do this!
+
 
 ### Test your knowledge
 
@@ -218,9 +212,9 @@ question("Which option best describes the **tidy** data format",
 
 ## Reading tabular data
 
-Whether we've created a data table ourselves (like we'll do in the practicals!) or whether we've got a data file from somewhere else, the file isn't much use to use unless we can get the data from the file in to `R`! 
+Whether we've created a data table ourselves (like we'll do in the practicals!) or whether we've got a data file from somewhere else, the file isn't much use to us unless we can get the data from the file in to `R`! 
 
-There's lots of different file types / file formats that we can use to save data in, but **best practice** is to use **comma-separated values** (`.csv`) files. Therefore, in this course we'll learning how to create `.csv` files and how to read data from `.csv` files in to `R`. 
+There's lots of different file types / file formats that we can use to save data in, but **best practice** is to use **comma-separated values** (`.csv`) files (we've mentioned this file extension before in previous practicals and tutorials). Therefore, in this course we'll learning how to create `.csv` files and how to read data from `.csv` files in to `R`. 
 
 `.csv` files get their name from the fact that the **values** in the file are **separated** by **commas**. If you had to take a look inside a `.csv` file then it would look something like the following:
 
@@ -237,28 +231,35 @@ To **read** or **import** data we'll use the **readr** package. The **readr** pa
 
 ### The `readr::read_csv()` function
 
-When you're first getting started with the  `readr::read_csv()` there will only be open argument that you need to use. This is the `file` argument. The `file` argument is just a **file path** or instructions of where to find the file on your computer. 
+When you're first getting started with the  `readr::read_csv()` there will only be open argument that you need to use. This is the `file` argument. The `file` argument is just the location of a file. Usually, this is a  **file path**, but you can also give it the location of a file on the internet. In the practicals we'll always be using file paths, but in this tutorial we'll use an internet location. 
+
+When you're first getting started with the  `readr::read_csv()` there will only be open argument that you need to use. This is the `file` argument. The `file` argument is just the location of a file. Usually, this is a  **file path**, but you can also give it the location of a file on the internet. In the practicals we'll always be using file paths, but in this tutorial we'll use an internet location. 
+
+When you load a file with the `readr::read_csv()` function the output is a data table. But usually what we'll want to do is assign that output to a variable. Run the code below to see what it looks like when you read data from a `.csv`. After running the code, modify it so that you assign the output to a variable called `ma_snarc`. 
+
+```{r select_one_ex, message=FALSE, warning=FALSE, exercise=TRUE, include=FALSE, exercise.warn_invisible = FALSE}
+readr::read_csv(file = 'https://raw.githubusercontent.com/ljcolling/textfiles/master/ma_snarc_trial.csv')
+```
+
+```{r select_one_ex-hint}
+ma_snarc <- readr::read_csv(file = 'https://raw.githubusercontent.com/ljcolling/textfiles/master/ma_snarc_trial.csv')
+```
+
+```{r select_one_ex-check, exercise.warn_invisible = FALSE}
+ma_snarc <- readr::read_csv(file = 'https://raw.githubusercontent.com/ljcolling/textfiles/master/ma_snarc_trial.csv')
+gradethis::grade_result(
+  pass_if(~ identical(.result, ma_snarc), learnr::random_praise()),
+  fail_if(~ !identical(.result, ma_snarc),learnr::random_encouragement()))
+```
+
 
 <!-- something about how to find files -->
 
 <!-- include some exercises where they just read practise putting together calls to here::here() -->
 
+<!-- https://raw.githubusercontent.com/ljcolling/textfiles/master/ma_snarc_trial.csv -->
 
-<!-- include something about rules for subject ids and naming conditions -->
+<!-- include something about rules for subject ids and naming conditions -> this will be in the practical -->
 
-
-```{r select_one_ex, message=FALSE, warning=FALSE, exercise=TRUE, include=FALSE}
-here::here()
-```
-
-```{r select_one_ex-hint}
-here::here("data","pizza.csv")
-```
-
-```{r select_one_ex-check}
-gradethis::grade_result(
-  pass_if(~ identical(.result, here::here("data","pizza.csv")), learnr::random_praise()),
-  fail_if(~ !identical(.result, here::here("data","pizza.csv")),learnr::random_encouragement()))
-```
 
 
