@@ -93,7 +93,7 @@ quiz(caption = "Quiz on files and paths",
     answer("There's no difference; they are synonyms.", correct = TRUE),
     answer("Folders cannot contain other folders but directories can."),
     answer("Folders cannot contain other folders but they can contain directories."),
-    answer("Directories can contain both dolders and directoreis but folders cannot. ")
+    answer("Directories can contain both folders and directories but folders cannot. ")
   ),
   question("Which one of these is **NOT** a valid file extension for pictures?",
     answer(".exe", correct = TRUE),
@@ -226,7 +226,7 @@ quiz(caption = "Quiz on RStudio projects",
   question("Where does an RStudio project set your current location to?",
     answer("Your OneDrive folder."),
     answer("The given project folder.", correct = TRUE),
-    answer("Therever RStudio is installed."),
+    answer("Wherever RStudio is installed."),
     answer("Your HOME directory.")
   )
 )
