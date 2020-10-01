@@ -7,7 +7,7 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap');
 
-body {
+body, body.ss-reconnecting {
   color: rgb(var(--font-col));
   background: linear-gradient(90deg, rgb(var(--sidebar-col)) 20%, #fafafa 20%);
   line-height: 1.4em;
@@ -301,6 +301,14 @@ code {
     font-style: initial;
     padding: 1px 2px;
 	font-family: monospace;
+}
+
+.ace-editor {
+	font-family: monospace;
+}
+
+.ace-tm .ace_string, .hljs-string {
+	color: rgb(var(--warn-col));
 }
 
 table code {
