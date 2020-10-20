@@ -146,6 +146,7 @@ To see for yourself how character strings behave, here's a short exercise.
 ```{r char-maths, exercise=T}
 17 * 5 + 100
 ```
+
 ### \ {.empty}
 
 **Now, put one of the numbers in quotes (single or double) and run the code again.**
