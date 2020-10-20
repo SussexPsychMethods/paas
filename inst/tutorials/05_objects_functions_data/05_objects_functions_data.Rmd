@@ -61,7 +61,7 @@ This may not be a very satisfying definition but bear with it for the moment.
 There are two basic kinds of things/object you need to be familiar with: data and functions.
 Let's revisit our kettle-filling code from last time to better explain what this means.
 
-```{r, eval=F}
+```{r, eval=FALSE}
 kettle_capacity <- 400 # capacity of the kettle
 water_needed <- 500 # water needed, kettle capacity allowing
 wait_time <- 600 # how many milliseconds to wait()
@@ -129,7 +129,7 @@ You've already got your hands on two of these.
 - `numeric` data are, as the name suggest, numbers. They can be positive or negative, whole or decimal numbers. Occasionally, you may see `R` refer to whole numbers as `"integer"` or `"int"` and decimal numbers as `"doulbe"` or `"dbl"`. The reason for the strange name `"double"` is that decimal numbers take up double the amount of computer memory than whole numbers. For every digit to the left of the decimal point, there must be space for one to the right of it.
 - The only type we haven't worked with yet is `"character"`. These can be strings of letters, numbers, or any other characters. This is the most complex data type. The important thing to understand about character strings is that **`R` doesn't try to understand their contents and won't perform any maths with them.** Character data are **always** surrounded by quotes (`'`), or double quotes (`"`):
 
-```{r, eval=F}
+```{r, eval=FALSE}
 3 # this is a numeric value
 -5307.2455 # so is this
 "3" # this is a character string
@@ -143,7 +143,7 @@ To see for yourself how character strings behave, here's a short exercise.
 
 **First, run the code below to see that it works just fine.**
 
-```{r char-maths, exercise=T}
+```{r char-maths, exercise=TRUE}
 17 * 5 + 100
 ```
 
@@ -161,7 +161,7 @@ So remember, *no maths with strings!*
 We already know that we can use logical operators to write expressions comparing numeric and logical values.
 What we haven't talked about yet is that you can use the equality and non-equality operators (`==` and `!=`) to compare character strings. Try this:
 
-```{r char-compare, exercise=T}
+```{r char-compare, exercise=TRUE}
 "mind" == "blown"
 ```
 
@@ -169,7 +169,7 @@ What we haven't talked about yet is that you can use the equality and non-equali
 
 Since `"mind"` and `"blown"` are two different strings, the result of the comparison is `FALSE`. Now try this:
 
-```{r char-compare-2, exercise=T}
+```{r char-compare-2, exercise=TRUE}
 "apple" == "apple"
 ```
 
@@ -194,7 +194,7 @@ This kind of manipulation is the bread and butter of all data processing and ana
 
 To ask `R` what type an object is, you we can use the `class()` function. It tells you what kind of object you're looking at. Try it yourself:
 
-```{r class-1, exercise=T}
+```{r class-1, exercise=TRUE}
 class(-4095.7201)
 ```
 ### \ {.empty}
@@ -225,7 +225,7 @@ This line can be arbitrarily long: one element, two, seven, million... even zero
 
 The basic way to create a vector is using the `c()` function. The "c" stands for "concatenate" or "combine", as in *"combine elements into a vector"*. Run the code in the exercise box below to see how the function is used.
 
-```{r vectors-1, exercise=T}
+```{r vectors-1, exercise=TRUE}
 c(1, 2, 3, 4, 10, -7)
 ```
 
@@ -330,7 +330,7 @@ This way we can store data from different participants in different rows of the 
 
 Tibbles offer precisely this kind of structure. This is what a nicely-formatted tibble looks like:
 
-```{r, echo=F}
+```{r, echo=FALSE}
 set.seed(6669)
 library(tibble)
 df <- tibble(participant_id = replicate(10, paste(sample(LETTERS, 5, replace = T), collapse = "")),
@@ -556,7 +556,7 @@ Finally, you learnt how to store objects in memory using the assignment operator
 
 - the syntax is:
   
-    ```{r, eval=F}
+    ```{r, eval=FALSE}
     valid_name_to_store_object_under <- output.of(function, call)
     ```
     
@@ -566,7 +566,7 @@ Finally, you learnt how to store objects in memory using the assignment operator
 - technically, you cannot change an object stored in the memory
 - you can, however, reassign a different object to the same name:
   
-    ```{r, eval=F}
+    ```{r, eval=FALSE}
     name <- some.function.of(name)
     ```
 
