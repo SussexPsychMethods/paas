@@ -34,6 +34,39 @@ install.packages <- function(x){
   return(glue::glue("{x} installed..."))
 }
 
+plus_5 <- function(a_number){
+  
+ if(!is(a_number,"numeric")){
+    stop("The input must be a number! Don't add \" \"")
+  }
+  a_number + 5
+}
+
+say_hello <- function(a_letter_string){
+  if(!is(a_letter_string,"character")){
+    stop("The input must be a letter string! Don't forget the \" \"")
+  }
+  cat("Hello", paste0(a_letter_string,"!"))
+}
+
+describe_input <- function(input_variable){
+  input = substitute(input_variable)
+  if(!is(input,"name")){
+    stop("input_variable must be a variable")
+  }
+  
+  input_type <- dplyr::case_when(
+    is(input_variable,"numeric") ~ "numbers",
+    is(input_variable,"character") ~ "letters",
+    TRUE ~ "something I wanted expecting!"
+  )
+  
+  cat(paste0("The input given to input_variable was a variable called: ",input),"\n")
+  cat(input,"contains:",input_type,"\n")
+  cat(input,"contains the content:",input_variable)
+  
+}
+
 ```
 
 ## About this tutorial
@@ -101,38 +134,7 @@ The rules are:
 - Variable inputs **don't** have `" "`
 
 ```{r}
-plus_5 <- function(a_number){
-  
- if(!is(a_number,"numeric")){
-    stop("The input must be a number! Don't add \" \"")
-  }
-  a_number + 5
-}
 
-say_hello <- function(a_letter_string){
-  if(!is(a_letter_string,"character")){
-    stop("The input must be a letter string! Don't forget the \" \"")
-  }
-  cat("Hello", paste0(a_letter_string,"!"))
-}
-
-describe_input <- function(input_variable){
-  input = substitute(input_variable)
-  if(!is(input,"name")){
-    stop("input_variable must be a variable")
-  }
-  
-  input_type <- dplyr::case_when(
-    is(input_variable,"numeric") ~ "numbers",
-    is(input_variable,"character") ~ "letters",
-    TRUE ~ "something I wanted expecting!"
-  )
-  
-  cat(paste0("The input given to input_variable was a variable called: ",input),"\n")
-  cat(input,"contains:",input_type,"\n")
-  cat(input,"contains the content:",input_variable)
-  
-}
 ```
 
 We can take a look at this in action! 
