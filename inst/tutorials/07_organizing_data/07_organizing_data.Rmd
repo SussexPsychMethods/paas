@@ -17,7 +17,7 @@ library(tidyr)
 library(readr)
 library(gradethis)
 
-knitr::opts_chunk$set(exercise.checker = gradethis::grade_learnr, exercise.warn_invisible = FALSE)
+knitr::opts_chunk$set(exercise.checker = gradethis::grade_learnr, exercise.warn_invisible = FALSE, echo=FALSE)
 
 # make some fake stroop data that will be added to package
 stroop_wide <- tibble(
