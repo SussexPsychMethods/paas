@@ -17,7 +17,7 @@ library(tidyr)
 library(readr)
 library(gradethis)
 
-knitr::opts_chunk$set(exercise.checker = gradethis::grade_learnr, exercise.warn_invisible = FALSE)
+knitr::opts_chunk$set(exercise.checker = gradethis::grade_learnr, exercise.warn_invisible = FALSE, echo=FALSE)
 
 # make some fake stroop data that will be added to package
 stroop_wide <- tibble(
@@ -166,49 +166,6 @@ In addition to the rules, there are also some conventions that you should follow
 Missing data is handled in `R` in a special way. `R` uses `NA` to represent data that is missing. When you're entering data, and you plan to read that data into `R` later, the best way to handle missing data is just to not enter anything! This might seem like a silly thing to mention, but in the past (and something still today) people used to enter `99` for a measurement whenever the value was missing. Don't be tempted to do this!
 
 
-### Test your knowledge
-
-```{r nameing1}
-question("Which option best describes the **tidy** data format",
-         answer("All of participant's measurements are on a single row", 
-                message =learnr::random_encouragement()),
-         answer("The data table is very long",
-                message =learnr::random_encouragement()),
-         answer("There is only one measurement per row and possibly many rows per participant", 
-                correct=TRUE, 
-                message = learnr::random_praise()),
-         allow_retry = TRUE, 
-         random_answer_order = TRUE)
-
-```
-
-```{r nameing2}
-question("Which option best describes the **tidy** data format",
-         answer("All of participant's measurements are on a single row", 
-                message =learnr::random_encouragement()),
-         answer("The data table is very long",
-                message =learnr::random_encouragement()),
-         answer("There is only one measurement per row and possibly many rows per participant", 
-                correct=TRUE, 
-                message = learnr::random_praise()),
-         allow_retry = TRUE, 
-         random_answer_order = TRUE)
-
-```
-
-```{r nameing3}
-question("Which option best describes the **tidy** data format",
-         answer("All of participant's measurements are on a single row", 
-                message =learnr::random_encouragement()),
-         answer("The data table is very long",
-                message =learnr::random_encouragement()),
-         answer("There is only one measurement per row and possibly many rows per participant", 
-                correct=TRUE, 
-                message = learnr::random_praise()),
-         allow_retry = TRUE, 
-         random_answer_order = TRUE)
-
-```
 
 ## Reading tabular data
 
