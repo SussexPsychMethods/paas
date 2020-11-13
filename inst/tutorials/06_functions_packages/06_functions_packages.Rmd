@@ -23,7 +23,7 @@ knitr::opts_chunk$set(exercise.checker = gradethis::grade_learnr)
 
 knitr::opts_chunk$set(echo = FALSE)
 
-split_power_bill <- function(number_of_people, total_cost){
+split_power_bill <- function(number_of_people = 1, total_cost = 0){
   total_cost / number_of_people
 }
 
