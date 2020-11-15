@@ -1,4 +1,6 @@
 .DS_Store
+.RData
+.Rhistory
 .Rproj.user/
 R/.DS_Store
 inst/tutorials/.DS_Store
@@ -12,3 +14,6 @@ inst/tutorials/07_organizing_data/.gitignore
 inst/tutorials/07_organizing_data/build.sh
 inst/tutorials/07_organizing_data/watch-start.sh
 man/.DS_Store
+build.sh
+watch.sh
+.vscode/
