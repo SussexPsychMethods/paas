@@ -16,7 +16,7 @@ library(gradethis)
 library(dplyr)
 library(palmerpenguins)
 penguins <- palmerpenguins::penguins
-knitr::opts_chunk$set(exercise.checker = gradethis::grade_learnr, exercise.warn_invisible = FALSE, echo=FALSE)
+knitr::opts_chunk$set(exercise.warn_invisible = FALSE, echo=FALSE)
 
 ```
 
@@ -205,8 +205,57 @@ dplyr::summarise(.data = penguins_grouped,
 
 ### Code Exercises
 
+Now it's your turn to try it out. 
+
+Work out the average mass for the penguins on each of the islands:
+```{r code1,  exercise=TRUE, exercise.cap='Code'}
+
+```
+
+```{r code1-hint-1}
+grouped <- dplyr::group_by(.data = penguins, ___)
+```
 
 
+```{r code1-hint-2}
+grouped <- dplyr::group_by(.data = penguins, island)
+```
+
+
+```{r code1-hint-3}
+grouped <- dplyr::group_by(.data = penguins, island)
+dplyr::summarise(.data = grouped, ___)
+```
+
+```{r code1-solution}
+grouped <- dplyr::group_by(.data = penguins, island)
+dplyr::summarise(.data = grouped, mean_mass = mean(body_mass_g, na.rm = TRUE))
+```
+
+Now work out the average flipper length of each sex of each species! (Hint: you'll been to group by two columns!)
+
+```{r code2,  exercise=TRUE, exercise.cap='Code'}
+
+```
+
+```{r code2-hint-1}
+grouped <- dplyr::group_by(.data = penguins, ___)
+```
+
+
+```{r code2-hint-2}
+grouped <- dplyr::group_by(.data = penguins, sex, species)
+```
+
+```{r code2-hint-3}
+grouped <- dplyr::group_by(.data = penguins, sex, species)
+dplyr::summarise(.data = grouped, ___)
+```
+
+```{r code2-solution}
+grouped <- dplyr::group_by(.data = penguins, sex, species)
+dplyr::summarise(.data = grouped, mean_flipper_length = mean(flipper_length_mm, na.rm = TRUE))
+```
 
 
 ## Part Two: Pipes `%>%`
@@ -279,7 +328,54 @@ penguins_summary <- dplyr::group_by(.data = penguins, species) %>%
   dplyr::summarise(.data = ., average_mass = mean(x = body_mass_g, na.rm = TRUE))
 ```
 
-
-
 ### Code Exercises
+
+Now it's your chance to try. We'll do the exact same problems as in **Part One**. But now I'd like you to try solve them using the `%>%`
+
+Work out the average mass for the penguins on each of the islands:
+```{r code3,  exercise=TRUE, exercise.cap='Code'}
+
+```
+
+```{r code3-hint-1}
+dplyr::group_by(.data = penguins, ___) 
+```
+
+
+```{r code3-hint-2}
+dplyr::group_by(.data = penguins, island)
+```
+
+
+```{r code3-hint-3}
+dplyr::group_by(.data = penguins, island) %>% dplyr::summarise(.data = ., ___)
+```
+
+```{r code3-solution}
+dplyr::group_by(.data = penguins, island) %>% dplyr::summarise(.data = ., mean_mass = mean(body_mass_g, na.rm = TRUE))
+
+```
+
+Now work out the average flipper length of each sex of each species! (Hint: you'll been to group by two columns!)
+
+```{r code4,  exercise=TRUE, exercise.cap='Code'}
+
+```
+
+```{r code4-hint-1}
+dplyr::group_by(.data = penguins, ___)
+```
+
+
+```{r code4-hint-2}
+dplyr::group_by(.data = penguins, sex, species)
+```
+
+```{r code4-hint-3}
+dplyr::group_by(.data = penguins, sex, species) %>% dplyr::summarise(.data = grouped, ___)
+```
+
+```{r code4-solution}
+dplyr::group_by(.data = penguins, sex, species) %>% dplyr::summarise(.data = ., mean_flipper_length = mean(flipper_length_mm, na.rm = TRUE))
+```
 
