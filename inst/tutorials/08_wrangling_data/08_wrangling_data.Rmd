@@ -1,0 +1,595 @@
+---
+title: "Wrangling data with `dplyr`"
+subtitle: "Tutorial 08"
+author: "Psychology as a Science"
+output:
+  learnr::tutorial:
+    progressive: true
+    allow_skip: true
+runtime: shiny_prerendered
+css: css/paas_learnr.css
+---
+```{r setup, include=FALSE}
+library(learnr)
+library(palmerpenguins)
+library(dplyr)
+library(gradethis)
+knitr::opts_chunk$set(exercise.checker = gradethis::grade_learnr)
+knitr::opts_chunk$set(echo = FALSE)
+penguins <- palmerpenguins::penguins
+```
+
+```{css}
+code {
+    color: inherit;
+    background-color: rgba(0, 0, 0, 0.04);
+}
+```
+
+## Wrangling data with `dplyr`
+
+`dplyr` is the main package that we'll use for **manipulating** and **transforming** datasets. The main kinds of transformations that we'll be performing are:
+
+1. Taking our **original dataset** and creating a **new** dataset that only has a **subset** of the **variables**/**columns** from the original dataset
+
+2. Taking our **original dataset** and creating a **new** dataset that only has a **subset** of the **cases**/**rows** from the original dataset
+
+3. Taking our **original dataset** and creating a **new** dataset that has an **additional** **variable**/**column** not in the original dataset 
+
+
+The `dplyr` package has functions for performing all of these operations. 
+
+For this tutorial, we're going to be using the **Palmer Penguins** dataset. The dataset contains measurements from different different penguins including their species (`species`), the island on which they were found (`island`), their bill length (`bill_length_mm`) and depth (`bill_depth_mm`), the flipper length (`flipper_length_mm`), their body mass (`body_mass_g`), their sex (`sex`), and the year the measurement was made (`year`). 
+
+<img src="www/penguins.png" style="display:flex;margin-left:auto;margin-right:auto;align-items:center;width:50%"></img>
+
+
+```{r}
+palmerpenguins::penguins
+```
+
+### Recap on **functions** and **objects**
+
+Before we get started, we'll just have a recap of the last several tutorials and practicals, just so that we can make sure that everyone is up to speed. 
+
+#### Functions
+
+Before we start using functions from `dplyr` let us just recap how to use functions in `R`. Functions take **inputs** (or arguments) and produce **outputs**. For all of the functions we'll cover in this section, one of the **inputs** will be our original data (a tibble called `penguins` in this case) and the output will be our new dataset which will be our transformed data. The original dataset will always be fed into the input called `.data`. Remember that you don't have to remember the argument names. You can just write the function name open the brackets and then hit the <kbd>Tab</kbd> key, and `R` will show you a list of the arguments. 
+
+#### Objects
+
+Remember, objects, or variables, are bit of information stored in the computer memory under a given label. We can **assign** the some data or content or a variable using the assignment arrow `<-`. Below you can see and example of the value (in this case, a string of letters) being assigned to a variable called `var`.
+
+```r
+var <- "a letter string"
+```
+
+Once this letter string has been assigned to the object called `var`, then you can just access the content of that object using the label `var`. For example, if you typed in `var` at the console and ran it you'd see the following:
+
+```r
+> var
+[1] "a letter string"
+```
+
+#### `tibbles`
+
+Objects can hold many different types of data. For example, they could hold strings of letters:
+
+```r
+var <- "1 two three 4"
+```
+
+Or they could hold numbers, or vectors of numbers.
+
+```r
+another_var <- 1
+yet_another_var <- c(1,2, 3, 4)
+
+```
+
+And sometimes they can hold a table, which `R` calls a `tibble`
+
+```r
+> my_tib
+# A tibble: 4 x 2
+   col1 col2
+  <dbl> <chr>
+1     1 one
+2     2 two
+3     3 three
+4     4 four
+```
+
+In this tutorial, the data that we'll be working on will be in a `tibble`
+
+
+### The `dplyr` functions
+
+The `dplyr` functions that we'll be learning about are all specialised for working with `tibble`s. They allow us to **do things will tibbles**. 
+
+We haven't done much with `tibble`s before, but in [week 6/practical 5](https://paas.netlify.app/practicals/05_data_structures/worksheets/) and [week 7/practical 6](https://paas.netlify.app/practicals/06_packages_functions/worksheets/) we did do a couple of things with `tibble`. We learned that when we want to access a particular column from a tibble we used the `$`. For example, if I wanted to get the column called `col1`, from the `tibble` called `my_tib`, I'd write:
+
+```r
+> my_tib$col1
+[1] 1 2 3 4
+```
+
+Or if I wanted to take the values in `col1` of `my_tib` and multiply them by 12, I'd write:
+
+```r
+> my_tib$col1 * 12
+[1] 12 24 36 48
+```
+
+Notice how we have to specifically access the column using the name of the tibble and the name of the column. The columns aren't **objects in their own right**. They're **parts of an object**—the `tibble` called `my_tib`. 
+
+But when it comes to working with `tibble`s and the `dplyr` functions, something special happens. The `dplyr` functions allow us to go **inside** the `tibble`. As you'll see, when we go **inside** a `tibble`, we can refer to **columns in that `tibble`** *as if* they were objects in their own right. This means we'll be referring to columns just using their names, so you won't see any `$` any more. 
+
+
+All the `dplyr` functions we'll learn about take a input of a `tibble` and produce a `tibble` as the output. The `tibble` will become the basic unit of data that we're working with. And the `dplyr` functions will allow us to go **inside** the `tibble`, which will make working with them a lot easier. 
+
+
+## Selecting
+
+The first operation will learn about is taking our **original input tibble** and **outputting** a tibble that only  has a subset of the **columns** from the original. 
+
+To do this, we'll use the function called `dplyr::select()`. Here is our dataset again. We'll be using the `dplyr::select()` function on this dataset to create a new one. 
+
+```{r}
+palmerpenguins::penguins
+```
+
+### Selecting a column
+
+The first thing we'll do is selecting one columns. If the columns were **objects in their own right** we could access a column just by using the label/name of the column. 
+
+With the `dplyr::select()` function we can do exactly the same!
+
+We'll use `penguins` (our dataset) as the input to the `.data` argument of `dplyr::select()`. `dplyr::select()` allows us to go **inside** `penguins` and now we again simply access the columns of `penguins` by using their names. 
+
+In the example below, we're selecting the `species` column from the `penguins` dataset. Try running the code to see the output. 
+
+```{r select_one_example, exercise=TRUE, exercise.cap="Example"}
+dplyr::select(.data = penguins, species)
+```
+
+You'll see the output is still a `tibble`, but it only contains the coluns we asked for. 
+
+If you want a different column, you can just replace `species` with the name of another column. Try completing the code below to select the `island` column. 
+
+```{r select_one_ex, exercise=TRUE}
+dplyr::select(.data = penguins, ___)
+```
+
+```{r select_one_ex-hint}
+dplyr::select(.data = penguins, island)
+```
+
+```{r select_one_ex-check}
+gradethis::grade_result(
+  pass_if(~ identical(.result, dplyr::select(.data = penguins, island)), learnr::random_praise()),
+  fail_if(~ !identical(.result, dplyr::select(.data = penguins, island)),learnr::random_encouragement()))
+```
+
+Now try selecting the `year` column!
+
+```{r select_one_ex2, exercise=TRUE}
+dplyr::select
+```
+
+```{r select_one_ex2-hint}
+dplyr::select(.data = penguins, ___)
+```
+
+```{r select_one_ex2-solution}
+dplyr::select(.data = penguins, year)
+```
+
+```{r select_one_ex2-check}
+gradethis::grade_result(
+  pass_if(~ identical(.result, dplyr::select(.data = penguins, year)), learnr::random_praise()),
+  fail_if(~ !identical(.result, dplyr::select(.data = penguins, year)),learnr::random_encouragement()))
+```
+
+For the last one, try selecting the `sex` column!
+
+```{r select_one_ex3, exercise=TRUE}
+
+```
+
+```{r select_one_ex3-hint}
+dplyr::select(.data = penguins,___)
+```
+
+```{r select_one_ex3-solution}
+dplyr::select(.data = penguins, sex)
+```
+
+```{r select_one_ex3-check}
+gradethis::grade_result(
+  pass_if(~ identical(.result, dplyr::select(.data = penguins, sex)), learnr::random_praise()),
+  fail_if(~ !identical(.result, dplyr::select(.data = penguins, sex)),learnr::random_encouragement()))
+```
+
+### Selecting multiple columns
+
+Now that you've got the hang of selecting **one** column, we're going to try selecting multiple columns! To select multiple columns we just list the names of the columns we want. The example below selects the `year`, `species`, and `island` column. Run the example to see the output.
+
+```{r select_multi_example, exercise=TRUE, exercise.cap="Example"}
+dplyr::select(.data = penguins, year, species, island)
+```
+
+Now try it out yourself. In the exercise below, try selecting the `bill_length_mm`, `bill_depth_mm`, and `flipper_length_mm` columns.
+
+```{r select_multi_ex1, exercise=TRUE}
+
+```
+
+```{r select_multi_ex1-hint}
+dplyr::select(.data = penguins,___)
+```
+
+```{r select_multi_ex1-solution}
+dplyr::select(.data = penguins,bill_length_mm, bill_depth_mm,flipper_length_mm)
+```
+
+```{r select_multi_ex1-check}
+
+gradethis::grade_result(
+  pass_if(~ identical(.result, 
+                      dplyr::select(.data = penguins,bill_length_mm, bill_depth_mm,flipper_length_mm)), learnr::random_praise()),
+  fail_if(~ !identical(.result, 
+                       dplyr::select(.data = penguins,bill_length_mm, bill_depth_mm,flipper_length_mm)),learnr::random_encouragement()))
+```
+
+
+### Dropping columns
+
+Selecting columns works fine when we only want to keep a few columns. However, sometimes we might want to keep **all but** a few columns from a dataset that has many columns. Typing out all the column names for the columns we want to keep can mean a lot of typing! But there is an easier way. Instead of typing out the names of the columns we want to keep, we can instead just **drop** columns. Dropping columns measurement that those columns won't be in our output, but all the other columns will be. To **drop** a column we just put a `-` in front of the column name.  In the next example, the new dataset will contain all the columns in the original dataset **except** for the `species` columns. 
+
+```{r drop_one_example, exercise=TRUE, exercise.cap="Example"}
+dplyr::select(.data = penguins, -species)
+```
+
+Now try it out yourself. In the exercise below, trying dropping the `year` column. 
+
+```{r drop_one_example_ex1, exercise=TRUE}
+
+```
+
+```{r drop_one_example_ex1-hint}
+dplyr::select(.data = penguins, __)
+```
+
+```{r drop_one_example_ex1-solution}
+dplyr::select(.data = penguins, -year)
+```
+
+
+```{r drop_one_example_ex1-check}
+gradethis::grade_result(
+  pass_if(~ identical(.result, 
+                      dplyr::select(.data = penguins, -year)
+                      ), learnr::random_praise()),
+  fail_if(~ !identical(.result,
+                       dplyr::select(.data = penguins, -year)
+                       ),learnr::random_encouragement()))
+```
+
+
+You can also drop **multiple** columns. You just need to put a `-` in front of the name of each column you want to drop. In the next exercise, try dropping the `year` and the `island` column. 
+
+```{r drop_one_example_ex2, exercise=TRUE}
+
+```
+
+```{r drop_one_example_ex2-hint}
+dplyr::select(.data = penguins, __)
+```
+
+```{r drop_one_example_ex2-solution}
+dplyr::select(.data = penguins, -year,-island)
+```
+
+
+```{r drop_one_example_ex2-check}
+gradethis::grade_result(
+  pass_if(~ identical(.result, 
+                      dplyr::select(.data = penguins, -year,-island)
+                      ), learnr::random_praise()),
+  fail_if(~ !identical(.result,
+                       dplyr::select(.data = penguins, -year,-island)
+                       ),learnr::random_encouragement()))
+```
+
+
+## Filtering
+
+Now that you've got the hang of selecting, we're going to try an new operation. This new operation is filtering! 
+
+To explain filtering, we'll look at a non-`R` example. Let's say you're a school teacher, and you have a classroom full of kids. Some of the kids are girls, some are boys, some of them are good at maths, some are struggling, and some are good at reading, and others are struggling. You can all this information written down in a table. Each row of the table is for one child. You have a column that has the child's name, and then you have columns that hold information about whether that child is a boy or  girl, another column holds that child's math score (a number out of 100), and another column holds their reading score (a number out of 100). 
+
+You've decided that you'll run a special class for the students that are struggling in maths. You go through the table looking at the numbers in the maths column. For each time you see a score below 60 you write that child's details in a new table. You write down their name, their gender, their maths score, and their reading score in columns just the same as they are in the original table. At the end of this, you'll have your original table, but you'll also have a new table that you made. This process, of creating a new table that only includes children that have maths scores below 60, is **filtering**. 
+
+The aim of this section is to learn how to use the `dplyr::filter()` function to instruct `R` to perform an operation like the one I just described. 
+
+Just like with the `dplyr::select()` function, the `dplyr::filter()` function has a argument called `.data` that will take our original tibble. 
+Next, we'll just tell the function **how** we want the data filtered. 
+
+Let's look at an example of `dplyr::filter()` in action. Here we'll be again be working with our `penguins` `tibble`. To refresh, the `tibble` has information about different penguins organised in columns. This includes a column called `year`, that tells you what year the measurement was made. We want to **filter** this, so that we only have measurements that were made in the year 2007 (This completely analogous to the example above, where we wanted to create a new table that only had the children with maths scores below 60). To do, we just write `year == 2007`. This means that we want the rows where the `year` value is equal to the number 2007. 
+
+If we put that all together, we get the example below. Run the example to see the output. 
+
+```{r filter_example_1, exercise=TRUE, exercise.cap="Example 1"}
+dplyr::filter(.data = penguins, year == 2007)
+```
+
+We don't only have to use `==`, we can use **any** logical operation we want. In the next example, we'll keep all the rows **except** those that have 2007 in the year column. That is, we to look for values that are **not equal to** 2007.
+
+```{r filter_example_2, exercise=TRUE, exercise.cap="Example 2"}
+dplyr::filter(.data = penguins, year != 2007)
+```
+
+Now you're going to try it out yourself. In the exercise below, filter the dataset so that it only contains the measurements that were made on the `island` of **Torgersen**. Remember, we want to look for the letter string **Torgersen**! Letter strings go in quotes, but labels (i.e., column labels) don't go in quotes. 
+
+```{r filter_ex1, exercise=TRUE}
+dplyr::filter(.data = penguins, ___)
+```
+```{r filter_ex1-hint-1}
+dplyr::filter(.data = penguins, )
+```
+```{r filter_ex1-hint-2}
+dplyr::filter(.data = penguins, island )
+```
+```{r filter_ex1-solution}
+dplyr::filter(.data = penguins, island == "Torgersen")
+```
+```{r filter_ex1-check}
+gradethis::grade_result(
+  pass_if(~ identical(.result, 
+                      dplyr::filter(.data = penguins, island == "Torgersen")
+                      ), learnr::random_praise()),
+  fail_if(~ !identical(.result,
+                       dplyr::filter(.data = penguins, island == "Torgersen")
+                       ),learnr::random_encouragement()))
+```
+
+
+Now try the opposite. Keep all the measurements that were made on an `island` other than **Torgersen**.
+
+```{r filter_ex2, exercise=TRUE}
+dplyr::filter(.data = penguins, ___)
+```
+```{r filter_ex2-hint-1}
+dplyr::filter(.data = penguins, )
+```
+```{r filter_ex2-hint-2}
+dplyr::filter(.data = penguins, island )
+```
+```{r filter_ex2-solution}
+dplyr::filter(.data = penguins, island != "Torgersen")
+```
+```{r filter_ex2-check}
+gradethis::grade_result(
+  pass_if(~ identical(.result, 
+                      dplyr::filter(.data = penguins, island != "Torgersen")
+                      ), learnr::random_praise()),
+  fail_if(~ !identical(.result,
+                       dplyr::filter(.data = penguins, island != "Torgersen")
+                       ),learnr::random_encouragement()))
+```
+
+In the first example we kept all the rows where the measurement was made in the `year` 2007. In the next exercise, try keep all the measurements that were made **after (but not including)** the `year` 2007.
+
+
+```{r filter_ex3, exercise=TRUE}
+dplyr::filter(.data = penguins, ___)
+```
+```{r filter_ex3-hint-1}
+dplyr::filter(.data = penguins, )
+```
+```{r filter_ex3-hint-2}
+dplyr::filter(.data = penguins, year > ___)
+```
+```{r filter_ex3-solution}
+dplyr::filter(.data = penguins, year > 2007)
+```
+```{r filter_ex3-check}
+gradethis::grade_result(
+  pass_if(~ identical(.result, 
+                      dplyr::filter(.data = penguins, year > 2007)
+                      ), learnr::random_praise()),
+  fail_if(~ !identical(.result,
+                       dplyr::filter(.data = penguins, year > 2007)
+                       ),learnr::random_encouragement()))
+```
+
+
+### Matching on multiple conditions
+
+We can also use `dplyr::filter()` to match more complex conditions. For example, we might want to keep the rows that have measurements from the `year` 2007 **and** where the `sex` of the penguin was female. To do this, we'll just join our two conditions `year == 2007` and `sex == "female"` with an `&`. Run the example to see the output.
+
+```{r filter_example_multi, exercise=TRUE, exercise.cap="Example 1"}
+dplyr::filter(.data = penguins, year == 2007 & sex == "female")
+```
+
+Or we might want to do something different like keep all the rows that have that measurements from the `year` 2007 **or** where the `sex` of the penguin is female. That is, if `year` is 2007 then we want regardless of what `sex`. And if `sex` is female we want it regardless of what `year` is. Now we'd just join `year == 2007` and `sex == "female"` with an `|`.
+
+```{r filter_example_multi2, exercise=TRUE, exercise.cap="Example 2"}
+dplyr::filter(.data = penguins, year == 2007 | sex == "female")
+```
+
+
+Now you’re going to try it out yourself. In the next exercise, keep all the cases where the measurements were made on the `island` of **Biscoe** and from the `species` **Adelie**. 
+
+```{r filter_ex4, exercise=TRUE}
+dplyr::filter(.data = penguins, ___)
+```
+```{r filter_ex4-hint-1}
+dplyr::filter(.data = penguins, )
+```
+```{r filter_ex4-hint-2}
+dplyr::filter(.data = penguins, island ==  ___ & species == ___)
+```
+```{r filter_ex4-solution}
+dplyr::filter(.data = penguins, island ==  "Biscoe" & species == "Adelie")
+```
+```{r filter_ex4-check}
+gradethis::grade_result(
+  pass_if(~ identical(.result, 
+dplyr::filter(.data = penguins, island ==  "Biscoe" & species == "Adelie")
+                      ), learnr::random_praise()),
+  fail_if(~ !identical(.result,
+dplyr::filter(.data = penguins, island ==  "Biscoe" & species == "Adelie")
+                       ),learnr::random_encouragement()))
+```
+
+Now try keep all the cases where the measurements were made after 2007 and on islands other than the island of **Torgersen**.
+
+```{r filter_ex5, exercise=TRUE}
+
+```
+```{r filter_ex5-hint-1}
+dplyr::filter(.data = penguins, year __ & island __)
+```
+```{r filter_ex5-hint-2}
+dplyr::filter(.data = penguins, year > ___ & island != ___)
+```
+```{r filter_ex5-solution}
+dplyr::filter(.data = penguins, year > 2007 & island != "Torgersen")
+```
+```{r filter_ex5-check}
+gradethis::grade_result(
+  pass_if(~ identical(.result, 
+dplyr::filter(.data = penguins, year > 2007 & island != "Torgersen")
+                      ), learnr::random_praise()),
+  fail_if(~ !identical(.result,
+dplyr::filter(.data = penguins, year > 2007 & island != "Torgersen")
+                       ),learnr::random_encouragement()))
+```
+
+
+Now try keep all the cases where the measurements were made after 2007 or on the island of **Torgersen**.
+
+```{r filter_ex5a, exercise=TRUE}
+
+```
+```{r filter_ex5a-hint-1}
+dplyr::filter(.data = penguins, year __ | island __)
+```
+```{r filter_ex5a-hint-2}
+dplyr::filter(.data = penguins, year > ___ | island != ___)
+```
+```{r filter_ex5a-solution}
+dplyr::filter(.data = penguins, year > 2007 | island == "Torgersen")
+```
+```{r filter_ex5a-check}
+gradethis::grade_result(
+  pass_if(~ identical(.result, 
+dplyr::filter(.data = penguins, year > 2007 | island == "Torgersen")
+                      ), learnr::random_praise()),
+  fail_if(~ !identical(.result,
+dplyr::filter(.data = penguins, year > 2007 | island == "Torgersen")
+                       ),learnr::random_encouragement()))
+```
+
+
+
+
+### Matching on `NA`s
+
+Finally, we’re going to work with `dplyr::filter` and missing values. You’ll notice that in the dataset there are a few rows where specific values are missing. For example, in one row the value for `sex` is missing and instead it contains an `NA`. Run the example to see how to filter the dataset to keep all rows that have an `NA` in the `sex` column.
+
+```{r match_na_example, exercise=TRUE, exercise.cap="Example"}
+dplyr::filter(.data = penguins, is.na(sex))
+```
+
+Now you’re going to try it yourself. Keep all the rows that have an `NA` in the `bill_length_mm` column. 
+
+```{r filter_ex6, exercise=TRUE}
+
+```
+```{r filter_ex6-hint-1}
+dplyr::filter(.data = penguins, )
+```
+```{r filter_ex6-hint-2}
+dplyr::filter(.data = penguins, is.na(___))
+```
+```{r filter_ex6-solution}
+dplyr::filter(.data = penguins, is.na(bill_length_mm))
+```
+```{r filter_ex6-check}
+gradethis::grade_result(
+  pass_if(~identical(.result, 
+dplyr::filter(.data = penguins, is.na(bill_length_mm))
+                      ), learnr::random_praise()),
+  fail_if(~ !identical(.result,
+dplyr::filter(.data = penguins, is.na(bill_length_mm))
+                       ),learnr::random_encouragement()))
+```
+
+Now try the opposite. Keep all the rows that don't have have `NA` in the `bill_length_mm` column. 
+
+```{r filter_ex7, exercise=TRUE}
+
+```
+```{r filter_ex7-hint-1}
+dplyr::filter(.data = penguins, )
+```
+```{r filter_ex7-hint-2}
+dplyr::filter(.data = penguins, !is.na(___))
+```
+```{r filter_ex7-solution}
+dplyr::filter(.data = penguins, !is.na(bill_length_mm))
+```
+```{r filter_ex7-check}
+gradethis::grade_result(
+  pass_if(~identical(.result, 
+dplyr::filter(.data = penguins, !is.na(bill_length_mm))
+                      ), learnr::random_praise()),
+  fail_if(~ !identical(.result,
+dplyr::filter(.data = penguins, !is.na(bill_length_mm))
+                       ),learnr::random_encouragement()))
+```
+
+
+## Mutating
+
+The last function we'll cover is the `dplyr::mutate()` function. To understand what the `dplyr::mutate()` function, we'll use another non-`R` example. 
+
+Let's say that you're working at a shop. You have a table of the inventory. In this table, you have a column for the name of the produce and a column for the price. You've decided that you want to discount the price of all the items in the inventory by 10%. Do this, you make a copy of the table and then you add a new column to it where you'll put in the new price. As you go through the table you look at every price in the price column, you work out the 10% discount of that price, and you write the new price in the new price column. At the end of this, you have your original inventory table, and you have a new inventory table that's the same as the original inventory table but with the new column containing the discounted prices. The operation you've just performed is a **mutate**.
+
+Now let's get `R` to do the same thing. Again, we'll use the `penguins` data. We'll take the `body_mass_g` column (body mass in grams) and we'll use the values in there to create a new column called `body_mass_kg`, which will be the body mass in kilograms. This means we'll just divide `body_mass_g` by 1000. To do this, we'll just write `body_mass_kg = body_mass_g / 1000`. Take a look at the example below to see it in action.
+
+```{r mutate_example, exercise=TRUE, exercise.cap="Example"}
+dplyr::mutate(.data = penguins, body_mass_kg = body_mass_g / 1000)
+```
+
+Now try it out yourself. Create a new column called `bill_volume` by multiplying together the `bill_length_mm` and `bill_depth_mm` columns.
+
+```{r mutate_ex1, exercise=TRUE}
+
+```
+```{r mutate_ex1-hint-1}
+dplyr::mutate(.data = penguins, bill_volume = __)
+```
+```{r mutate_ex1-hint-2}
+dplyr::mutate(.data = penguins, bill_volume = __ * __)
+```
+```{r mutate_ex1-solution}
+dplyr::mutate(.data = penguins, bill_volume = bill_length_mm * bill_depth_mm)
+```
+```{r mutate_ex1-check}
+gradethis::grade_result(
+  pass_if(~identical(.result, 
+dplyr::mutate(.data = penguins, bill_volume = bill_length_mm * bill_depth_mm)
+                      ), learnr::random_praise()),
+  fail_if(~ !identical(.result,
+dplyr::mutate(.data = penguins, bill_volume = bill_length_mm * bill_depth_mm)
+                       ),learnr::random_encouragement()))
+```
+
+
+## Summing up 
+
+The best way to learn how to use these functions is to think about what you're starting with and what you what you want to end up with (more columns, fewer columns, fewer rows etc), and then use that to reason about what you need to do. The operations you're performing are not any different to things you would've done before. Even though the terminology might be alien, the operations themselves are things you would've done countless times before in everyday life. If you keep this in mind, I'm sure you'll get the hang of it quickly. 

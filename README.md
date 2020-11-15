@@ -42,4 +42,10 @@ learnr::run_tutorial(name = "06_functions_packages ", package = "paas")
 learnr::run_tutorial(name = "07_organizing_data ", package = "paas")
 ```
 
---- More will be added in due course
+```r
+learnr::run_tutorial(name = "08_wrangling_data", package = "paas")
+```
+
+```r
+learnr::run_tutorial(name = "09_summaries_and_pipes", package = "paas")
+```

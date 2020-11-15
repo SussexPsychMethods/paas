@@ -210,13 +210,4 @@ gradethis::grade_result(
 ```
 
 
-<!-- something about how to find files -->
-
-<!-- include some exercises where they just read practise putting together calls to here::here() -->
-
-<!-- https://raw.githubusercontent.com/ljcolling/textfiles/master/ma_snarc_trial.csv -->
-
-<!-- include something about rules for subject ids and naming conditions -> this will be in the practical -->
-
-
 
