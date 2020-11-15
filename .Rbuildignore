@@ -1,4 +1,8 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^inst/tutorials/functions_and_packages/functions_and_packages\.Html$
+^inst/tutorials/$
 ^LICENSE\.md$
+^.vscode
+^watch.sh
+^build.sh
