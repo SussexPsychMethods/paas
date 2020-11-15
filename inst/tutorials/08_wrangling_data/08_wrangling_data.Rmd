@@ -158,10 +158,14 @@ You'll see the output is still a `tibble`, but it only contains the coluns we as
 If you want a different column, you can just replace `species` with the name of another column. Try completing the code below to select the `island` column. 
 
 ```{r select_one_ex, exercise=TRUE}
+
+```
+
+```{r select_one_ex-hint-1}
 dplyr::select(.data = penguins, ___)
 ```
 
-```{r select_one_ex-hint}
+```{r select_one_ex-hint-2}
 dplyr::select(.data = penguins, island)
 ```
 
