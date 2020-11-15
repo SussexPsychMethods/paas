@@ -36,7 +36,7 @@ learnr::run_tutorial(name = "05_objects_functions_data", package = "paas")
 
 ```r
 learnr::run_tutorial(name = "06_functions_packages ", package = "paas")
-
+```
 
 ```r
 learnr::run_tutorial(name = "07_organizing_data ", package = "paas")
