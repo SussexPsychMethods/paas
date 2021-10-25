@@ -1,0 +1,16 @@
+---
+title: "PAAS Week 03: Introduction to R Markdown"
+subtitle: "Week 03 Tutorial"
+description: "Psychology as a Science Week 03 Tutorial. Do this tutorial to prepare for the Week 04 practical class."
+author: "Psychology as a Science"
+tutorial:
+  version: 1.0
+output:
+  learnr::tutorial:
+    css: ['css/katex.min.css']
+    includes: 
+      js: "js/setup.js"
+runtime: shiny_prerendered
+---
+
+To load this tutorial, follow the link on canvas.

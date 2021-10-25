@@ -2,13 +2,13 @@
 
 #' @export
 worksheet <- function(toc = TRUE) {
-# locations of resource files in the package
-    pkg_resource <- function(...) {
+  # locations of resource files in the package
+  pkg_resource <- function(...) {
     system.file(..., package = "paas")
-    }
+  }
 
-    css <- pkg_resource("assets/style.min.css")
-    footer <- pkg_resource("/assets/footer.html")
+  css <- pkg_resource("assets/style.min.css")
+  footer <- pkg_resource("/assets/footer.html")
 
   # call the base html_document function
   rmarkdown::html_document(
@@ -19,9 +19,16 @@ worksheet <- function(toc = TRUE) {
   )
 }
 
-#'@export
+#' @export
 dplyr_worksheet_setup <- function() {
-  knitr::opts_chunk$set(echo = TRUE,
-                        error = TRUE,
-                        highlight = TRUE)
+  knitr::opts_chunk$set(
+    echo = TRUE,
+    error = TRUE,
+    highlight = TRUE
+  )
+}
+
+#' @export
+week3 <- function() {
+  learnr::run_tutorial(name = "03_r_markdown", package = "paas")
 }
