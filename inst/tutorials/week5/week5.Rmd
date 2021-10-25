@@ -1,0 +1,833 @@
+---
+title: "PAAS Week 05: Objects and data structures"
+subtitle: "Week 05 Tutorial"
+description: "Psychology as a Science Week 05 Tutorial. Do this tutorial to prepare for the Week 06 practical class." 
+author: "Psychology as a Science"
+output:
+  learnr::tutorial:
+    progressive: true
+    allow_skip: true
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+knitr::opts_chunk$set(echo = T)
+question <- function(..., randomise = T, retry = T) {
+  learnr::question(..., allow_retry = retry, random_answer_order = randomise)
+}
+
+```
+
+```{css, echo=FALSE}
+.bquote {
+    font-style: italic;
+    margin-left: 50%;
+	margin-top: 30px;
+	margin-bottom: 40px;
+    position: relative;
+    max-width: max-content;
+}
+
+.bquote::before {
+    content: "\201C";
+    position: absolute;
+    font-size: 5em;
+    font-family: times;
+    font-weight: bolder;
+    color: rgb(var(--theme-col));
+    top: 15px;
+    left: -40px;
+}
+
+.bquote > p {
+    margin-bottom: 0;
+}
+
+.bquote > .qauth {
+    font-style: normal;
+    margin-right: -1em;
+    float: right;
+}
+
+.bquote > .qauth::before {
+    content: "~";
+}
+```
+
+## Intro
+
+Welcome to the fifth PAAS tutorial.
+
+We will pick up where we left off last time and expand on the notion of objects
+and functions in `R`.
+
+Since we are learning to use `R` with the intention to analyse data, we will
+also talk about how `R` data classifies and structures data.
+
+Before you proceed with this tutorial, make sure you understand everything
+we've covered so far.
+
+\ 
+
+## Objects and function calls
+
+<div class="bquote">
+Everything that exists is an object.
+
+Everything that happens is a function call.
+
+<div class="qauth">[John Chambers](https://en.wikipedia.org/wiki/John_Chambers_(statistician))</div>
+</div>
+
+The quote conveys an essential feature of the `R` language.
+
+It is not an exaggeration; it is actually 100% accurate: everything that exists
+in `R` is an object and everything we ask `R` to do is a function call.
+
+### Function calls
+
+A function call is simply the act of using a function.
+
+For example, you surely know how to add two numbers together.
+
+Addition is a function.
+
+It takes two numbers as inputs and returns a single number as an output.
+
+However, you don't go around constantly adding numbers, just because you know
+how it's done.
+
+You invoke, or *call* the addition function stored somewhere in your brain (or
+your phone) only when you want to use it.
+
+So, *addition* is a function and *adding* is a **function call**.
+
+Function calls are represented with a set of parentheses `()` at the end of a
+function name, *e.g.*, `tap.on()` or `wait(600)`.
+
+### Objects
+
+An object in `R` is simply some sort of thing.
+
+This may not be a very satisfying definition but bear with it for the moment.
+
+There are two basic kinds of things/object you need to be familiar with: data
+and functions.
+
+Let's revisit our kettle-filling code from last time to better explain what
+this means.
+
+```{r, eval=FALSE}
+kettle_capacity <- 400 # capacity of the kettle
+water_needed <- 500 # water needed, kettle capacity allowing
+wait_time <- 600 # how many milliseconds to wait()
+
+tap.on() # turn the tap on
+
+# loop while condition is TRUE
+while ((get.kettle.content() < water_needed) & !is.kettle.full()) {
+  wait(wait_time) # wait for wait_time ms
+}
+
+tap.off() # turn the tap off
+```
+
+\ 
+
+#### Functions
+
+We already talked about how `tap.on()`, `tap.of()`, `get.kettle.content()`,
+`is.kettle.full()`, and `wait()` are functions. They are objects that can *do*
+things: turn a tap on or off, check the content of the kettle, wait for a
+number of milliseconds.
+
+Contrast these to all the other things we've encountered thus far: numbers and
+logical values (`TRUE` and `FALSE`).
+
+These are things that contain information but don't really do anything on their
+own.
+
+**We use functions to do things with data.**
+
+You can liken this relationship to baking a cake.
+
+Let's say I have a `make.cake()` function that contains the instructions how to
+mix the batter, line the cake tin, pour the batter in the tin, turn the oven
+on, put the tin in the oven, wait, and finally take the cake out and turn the
+oven off.
+
+This function in and of itself is not enough to make a cake.
+
+We also need the ingredients.
+
+In this analogy, the ingredients are the data.
+
+Take, for instance our `wait()` function.
+
+On its own, it doesn't really do anything.
+
+It needs some data -- namely the number of milliseconds to wait -- in order to
+do something: `wait(600)`.
+
+Sure, there are other functions in the kettle-filling code that don't seem to
+require any data, but bear in mind that this was a simplified example and, in
+actual code, even these functions would need data to work with.
+
+
+<div class="warn">While, technically speaking, the parentheses denote a
+function **call** rather than the function itself, we will write out the names
+of functions with them attached so that you know we're talking about functions
+and not about data objects</div>
+
+OK, you might be thinking, but what are operators then?
+
+They do things!
+
+But they don't use parentheses?!
+
+Good thinking!
+
+Operators **are** functions and there is a way of using them with parentheses
+but, because, it makes more sense to say things like `2 + 4`, rather than ``
+`+`(2, 4) ``, operators have been also given a special form that allows us to
+use them the way we have been doing.
+
+\ 
+
+We will go into more detail about what functions are, how they work, and how to
+call them next time.
+
+Let's focus on data now.
+
+\ 
+
+## Data
+
+As we said earlier, data are objects that contain information.
+
+By information, we mean anything that functions can operate on.
+
+In `R` practice, it is often things like datasets, variables, test results, and
+so on.
+
+### Data types
+
+There are three types of data: logical, numeric, and character.
+
+You've already got your hands on two of these.
+
+- `logical` data can either be `TRUE` or `FALSE`. This is the simplest data
+  type.
+
+- `numeric` data are, as the name suggest, numbers. They can be positive or
+  negative, whole or decimal numbers. Occasionally, you may see `R` refer to
+  whole numbers as `"integer"` or `"int"` and decimal numbers as `"doulbe"` or
+  `"dbl"`. The reason for the strange name `"double"` is that decimal numbers
+  take up double the amount of computer memory than whole numbers. For every
+  digit to the left of the decimal point, there must be space for one to the
+  right of it.
+
+- The only type we haven't worked with yet is `"character"`. These can be
+  strings of letters, numbers, or any other characters. This is the most
+  complex data type. The important thing to understand about character strings
+  is that **`R` doesn't try to understand their contents and won't perform any
+  maths with them.** Character data are **always** surrounded by quotes (`'`),
+  or double quotes (`"`):
+
+```{r, eval=FALSE}
+3 # this is a numeric value
+-5307.2455 # so is this
+"3" # this is a character string
+"This is also a single character string"
+'sqrt(25) + 3^7' # ALSO a character string, NOT a command!
+```
+
+\
+
+To see for yourself how character strings behave, here's a short exercise.
+
+**First, run the code below to see that it works just fine.**
+
+```{r char-maths, exercise=TRUE}
+17 * 5 + 100
+```
+
+### \ {.empty}
+
+**Now, put one of the numbers in quotes (single or double) and run the code again.**
+
+### \ {.empty}
+
+The error you just got is basically telling you that you tried to use a
+non-numeric value (*i.e.*, a character string) in a arithmetic function.
+
+So remember, *no maths with strings!*
+
+\ 
+
+We already know that we can use logical operators to write expressions
+comparing numeric and logical values.
+
+What we haven't talked about yet is that you can use the equality and
+non-equality operators (`==` and `!=`) to compare character strings. Try this:
+
+```{r char-compare, exercise=TRUE}
+"mind" == "blown"
+```
+
+### \ {.empty}
+
+Since `"mind"` and `"blown"` are two different strings, the result of the
+comparison is `FALSE`. Now try this:
+
+```{r char-compare-2, exercise=TRUE}
+"apple" == "apple"
+```
+
+### \ {.empty}
+
+Finally, `R` is case-sensitive. Change one of the `"apple"` strings to
+`"Apple"` and run the code again.
+
+\ 
+
+Matching strings like this is really useful for creating subsets of your data.
+
+Like we said in the previous tutorial, if we collected some data and only
+wanted to look at the data for non-native English speakers, then -- assuming
+that the information about our participants' first language is stored in a
+variable called `language` -- we could use the logical expression `language !=
+"English"`.
+
+This kind of manipulation is the bread and butter of all data processing and
+analysis so make sure that logical operations with all three data types
+(logical, numeric, character) make sense to you.
+
+\ 
+
+<div class="warn">**REMEMBER** that character strings must have quotes around
+them. Conversely, if something has quotes around it, it is a character string,
+no matter what it is. If it's a numeral, or a piece of code, it doesn't matter.
+`R` will treat it as a meaningless string of characters.</div>
+
+\ 
+
+### \ {.empty}
+
+To ask `R` what type an object is, you we can use the `class()` function. It
+tells you what kind of object you're looking at. Try it yourself:
+
+```{r class-1, exercise=TRUE}
+class(-4095.7201)
+```
+### \ {.empty}
+
+Now, put the number above in quotes and run the code again to see that it will
+really become a character string.
+
+### \ {.empty}
+
+<div class="textbox"> Remember that **everything that exists is an object**.
+This is true also for the output of functions. As you can see, the name of the
+object class returned by the function is in quotes, which means that it is a
+character string. We can then say that the `class()` function returns a
+character string with the class of the object that we *passed to* the function.
+</div>
+
+
+## Data structures
+
+`R` wouldn't be much use if we had to work with only one data point or value at
+a time.
+
+Fortunately, that's not the case.
+
+There are several ways to group data into objects, called data structures, that
+`R` offers.
+
+We will look at two, namely vectors, and tibbles.
+
+## Vectors
+
+### \ {.empty}
+
+The simplest way of grouping values together is to put them in a vector.
+
+A vector is simply a line of values or *elements*.
+
+This line can be arbitrarily long: one element, two, seven, million... even
+zero elements!
+
+The basic way to create a vector is using the `c()` function. The "c" stands
+for "concatenate" or "combine", as in *"combine elements into a vector"*. Run
+the code in the exercise box below to see how the function is used.
+
+```{r vectors-1, exercise=TRUE}
+c(1, 2, 3, 4, 10, -7)
+```
+
+### \ {.empty}
+
+The output shows you that you now have a row of numbers - a vector. 
+
+You can now treat the vector as if it were a single element.
+
+For example, given that our vector is composed of numbers, we can do maths with
+it.
+
+See what happens if you add `+ 2` to the command and run the code:
+
+```{r vector-arithmetic, exercise=TRUE}
+c(1, 2, 3, 4, 10, -7)
+```
+
+
+```{r vector-arithmetic-solution}
+c(1, 2, 3, 4, 10, -7) + 2
+```
+
+
+### \ {.empty}
+
+Nice, the computer added 2 to every element of the vector.
+
+You can probably see that it's useful to be able to do maths on multiple
+numbers at the same time with just a single command.
+
+\ 
+
+Non-numeric values can, of course, also be grouped into vectors. In the box
+below, create a vector with the names of several of your friends or family
+members.
+
+```{r char-vector, exercise=TRUE}
+
+```
+
+<div id="char-vector-hint">
+Remember:
+
+- character strings must be `"in quotes"`
+- individual values in the `c()` function must be separated with commas
+</div>
+
+You can put as many elements into the `c()` function as you like but you **must
+separate them with commas**.
+
+### Data types in vectors
+
+Vectors can only ever contain data of the same type. See what happens, when you
+turn any one of the numbers in the vector below into a character string by
+putting it in quotes.
+
+```{r vec-class, exercise=TRUE}
+c(1, -6, 3,64, -432, 2, 45)
+```
+
+
+### \ {.empty}
+
+As you can see, all the values in the vector got converted to character
+strings. That is because, if you try to put different data types in a single
+vector, they will get converted to the most complex type. Character vectors are
+more complex than double (decimal) numbers, which are more complex than
+integers, which, in turn, are more complex than logical values.
+
+\ 
+
+One last thing about vectors.
+
+Remember how we told you not to worry about the `[1]` that gets printed out
+everytime we run a command (see the output of any exercise)?
+
+Let's talk about it now.
+
+Before we do, though, run the following command to create a vector of all
+integers between 1 and 100.
+
+```{r vector-2, exercise=TRUE}
+1:100
+```
+
+### \ {.empty}
+
+Now that we have a longer vector, you can see that there are several of these
+brackets, one at the beginning of every line.
+
+This is just `R`'s way of helping you get a feel for how many elements there
+are in your vector.
+
+The number in the brackets tells you the position of the elements next to it in
+the vector.
+
+`[1]` means the next element is the first one in the vector, `[42]` means it's
+the 42^nd^, and so on...
+
+\ 
+
+The `[1]`s we saw next to every piece of output we have encountered thus far
+suggest that all the output were vectors!
+
+This is true.
+
+Vectors are the most basic data structures and so even when `R` is manipulating
+a single value, it treats it as a vector that contains one element.
+
+Remember the `class()` function?
+
+```{r, class-fun-output}
+class(1:100)
+```
+
+When you run the code above (go on, do it!), the function will return `[1]
+"integer"`, because the vector `1:100` (integers between 1 to 100) only
+contains whole numbers. But as you can also see that what the function returned
+was **a character vector of length 1**.
+
+<div class="textbox"> When learning `R`, it's really important to get used to
+thinking about function calls in terms of their output. The code `class(1:100)`
+is, after all just a linguistic representation of what the command does. And
+what it does is return a character vector of length one that contains
+information about the data type of the vector `1:100`.
+
+Thinking about code in terms of what it does is very much like normal language.
+If somone tells you "Pass the salt, please", you don't start analysing the
+sentence, thinking "'pass' is the second person imperative of the verb that
+means to transport or transfer, 'the' is the definite article..." No, you
+extract the meaning of the sentence and, hopefully, pass the salt. </div>
+
+
+## Tibbles
+
+Vectors are certainly very useful data structures but when analysing collected
+data, we often want to organise them in a rectangualr structure with rows and
+columns.
+
+Think spreadsheets (Excel, Google sheets, *etc*).
+
+This way we can store data from different participants in different rows of the
+spreadsheet and have each column represent a different variable, for example
+participants' age, eye colour, or number of instagram followers.
+
+Tibbles offer precisely this kind of structure. This is what a nicely-formatted
+tibble looks like:
+
+```{r, echo=FALSE}
+set.seed(6669)
+library(tibble)
+df <- tibble(participant_id = replicate(10, paste(sample(LETTERS, 5, replace = T), collapse = "")),
+             age = sample(18:58, 10, replace = T),
+             eye_colour = sample(c("blue", "brown", "green"), 10, replace = T, prob = c(35, 55, 10)),
+             ig_followers = rlnorm(10, meanlog = 7))
+
+df
+```
+
+And this is what the same tibble looks like in default raw `R` output, without
+the fancy formatting:
+
+```{r, echo=F, paged.print=FALSE}
+df
+```
+
+\ 
+
+As you can see, a tibble looks very much like a spreadsheet: it is a
+rectangular arrangement of data with cells organised into rows and columns.
+This means that **all rows must contain the same number of columns and all
+columns must contain the same number of rows**.
+
+Also notice that, unlike vectors, **tibbles can contain data of various
+types**. In the example above, the first and third columns (`participant_id`
+and `eye_colour`, respectively) are character (`<chr>`) and the second and
+fourth columns are numeric (one is integer, `<int>`, and the other is double,
+`<dbl>`). However, because **each column of a tibble is a vector**, each column
+can only contain data of one type!
+
+Finally, the columns of a tibble are always named. In our example, the names of
+the columns are `participant_id`, `age`, `eye_colour`, and `ig_followers`.
+
+\ 
+
+We will learn how to work with vectors and tibbles in future tutorials but, for
+now, this is all you need to know about them.
+
+\ 
+
+## Storing objects
+
+### \ {.empty}
+
+Being able to create vectors and organise your data in tibbles is great but
+it's not all that much use without understanding how to store the objects you
+create in the computer's memory.
+
+Let's go back to a very basic command. In the box below, type in a number --
+any number -- and run the code.
+
+```{r assign-1, exercise=TRUE}
+
+```
+
+
+### \ {.empty}
+
+Let's break down what just happened.
+
+You wrote a command that tells the computer to create a numeric vector one
+element long.
+
+This command produces some sort of output, in this case your numeric vector of
+length one.
+
+The output of the command needs to "go" somewhere.
+
+By default, it gets directed to the console (these exercise boxes are
+essentially virtual `R` consoles).
+
+After the computer has "printed" the output of the command into the console, it
+forgets everything about it.
+
+As far as your computer is concerned, nothing ever happened.
+
+To make the computer remember the output of the command, we can direct the
+output into computer's memory, rather than into the console. We can do this by
+assigning the output to a name using the assignment operator, `<-`, we saw in
+the previous tutorial.
+
+It's really simple! This is the code to store *a numeric vector of length one
+containing the number 1526* in the memory under the name `my_num`. All you need
+to do now is to run it.
+
+```{r assign-2, exercise=TRUE}
+my_num <- 1526
+```
+
+### \ {.empty}
+
+There are only a handful of rules you need to follow to store the output of a
+command in the memory:
+
+- The name must be valid
+  
+  - No white spaces allowed (hence the `_`)
+
+  - Starts with a letter, not a number of a special character.
+
+  - The name is not a character string so **it must not be in quotes**.
+
+- No white space allowed between the `<` and `-` in the assignment operator.
+
+- The command to the right of the `<-` must be a valid command so watch out for
+  errors.
+
+<div class="warn"> Notice that when you run the code above, the number does not
+get printed under the box in the same way it did in the previous exercise! This
+is because the output of the command got directed into the memory under the
+name `my_num` instead of the console.
+
+Remember, output of a command **can only ever go to one place at a time!** You
+can send it to the memory, write it to a file on your computer's disk, or print
+it on the screen. </div>
+
+To recall the object from the memory, simply type its name (again, never in
+quotes!) and run the command:
+
+```{r assign-3, exercise=TRUE}
+
+```
+
+```{r assign-3-setup}
+my_num <- 1526
+```
+
+```{r assign-3-solution}
+my_num
+```
+
+
+### \ {.empty}
+
+And there you have it, as good as new!
+
+What `R` now showed you was just a copy of the content of `my_num`. The actual
+object is still stored in the memory and can be recalled again and again until
+you quit or restart `R` (or this tutorial).
+
+\ 
+
+The name `my_num` is now just a representation of the object stored under that
+name. This means that you can use `my_num` in the same way you would use the
+number 1526. For example, you can do maths with it.
+
+Multiply `my_num` by 4.
+
+```{r assign-4, exercise=TRUE}
+
+```
+
+```{r assign-4-setup}
+my_num <- 1526
+```
+
+```{r assign-4-solution}
+my_num * 4
+```
+
+
+### \ {.empty}
+
+As you can imagine it's very useful to be able to use names as stand-in for
+objects, especially objects that contain a lot of data.
+
+There's a little catch to storing objects though. Once they are in memory,
+stored under a name, that's it. They can be recalled, they can be removed from
+the memory if you wish to do it, but they cannot be changed. At least not
+*technically speaking*.
+
+Let's demonstrate this on an example. Say we create a vector of character
+strings representing the names of the methods modules and save it under the
+name `modules`:
+
+```{r}
+modules <- c("PAAS", "Analysing Data", "Discovering Statistics")
+```
+
+
+Here they are:
+
+```{r}
+modules
+```
+
+\ 
+
+Now, it turned out we omitted one of the modules, Quantitative and Qualitative
+Methods. To add an element to an existing vector, we can use the `c()` function
+and the vector's name:
+
+```{r}
+# combine whatever is in modules with the string "QQM" into a single vector
+c(modules, "QQM")
+```
+
+The output now shows `"QQM"` added to the other module names.
+
+
+### \ {.empty}
+
+Remember, however, two things:
+
+1. The output of a command can only ever go to one place at a time.
+
+2. When you print out the contents of a name, you only get a **copy of the
+   contents**
+
+These two principles considered, it should not be too surprising to see that,
+if we now print out the contents of `modules`...
+
+```{r}
+modules
+```
+
+...they will be unchanged: There's no `"QQM"` at the end!
+
+So remember, you can't *really* change an object.
+
+
+### \ {.empty}
+
+This may seem like a major drawback of `R` until you realise that, even though
+you cannot change an object you can **reassign** different objects to an
+already existing name, thereby effectively replacing the original content with
+a new one.
+
+So, to "add" `"QQM"` to `modules`, we have to assign the output of the command
+above to the name `modules`:
+
+```{r}
+modules <- c(modules, "QQM")
+```
+
+By reassigning to the name `modules`, the computer has now forgotten what was
+stored under the name before and is storing only the new object:
+
+```{r}
+modules
+```
+
+\ 
+
+<div class="warn"> Assignment and reassignment of command output to names may
+be a little counter-intuitive at first but understanding it is really crucial
+for working with `R` so make sure you wrap your head around it before you move
+on! </div>
+
+
+## Summary
+
+In this tutorial, you learnt that
+
+- everything that exists is an object
+- and everything that happens is a function call
+- a function call is the action of using (calling) a function
+- there are two kinds of objects:
+  - functions
+  - data structures
+- data can be one of three types:
+  - logical; `TRUE` or `FALSE` - the simplest type
+  - numeric; integer or double (decimal)
+  - character; always in "quotes" - the most complex type
+
+You also found out about two kinds of data structures
+
+- vectors
+  - ordered chains of values/elements
+  - can be arbitrarily long
+  - can only ever contain one type of data
+  - easily created with the `c()` function
+- tibbles
+  - like spreadsheets
+  - rectangular arrangements with rows and columns
+  - always have named columns
+  - each column is a vector, so all rules for vectors apply
+  - different columns can contain different types of data
+
+Finally, you learnt how to store objects in memory using the assignment operator `<-`
+
+- the syntax is:
+  
+```{r, eval=FALSE}
+valid_name_to_store_object_under <- output.of(function, call)
+```
+    
+- names are never in "quotes"!
+
+- commands and names are just symbolic representations of the objects they create/contain and can be treated as such
+
+- output of a command can only ever go in one place at a time: file, memory, or screen
+
+- you can reassign a different object to a name you've already used and this
+  will overwrite the content of that name:
+  
+```{r, eval=FALSE}
+name <- some.function.of(name)
+```
+
+\ 
+
+<div class="warn"> All of the above is extra important to know, if you ever
+want to learn `R`. If you learn and understand these principles, working with
+`R` is going to be rather easy! </div>
+
+\ 
+  
+**And as always, your last task for this tutorial is to create a Week_05
+RStudio project in the paas folder.**
+
+\ 
+
+<big>Well done!</big>
+
+\

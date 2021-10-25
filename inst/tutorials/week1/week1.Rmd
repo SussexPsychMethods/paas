@@ -1,0 +1,24 @@
+---
+title: "PAAS Week 01: Introduction to computing"
+subtitle: "Week 01 Tutorial"
+description: "Psychology as a Science Week 01 Tutorial. Do this tutorial to prepare for the Week 02 practical class." 
+author: "Psychology as a Science"
+tutorial:
+  version: 1.0
+output:
+  learnr::tutorial:
+    css: ['css/katex.min.css']
+    includes: 
+      js: "js/setup.js"
+runtime: shiny_prerendered
+---
+ 
+```{r setup, include=FALSE}
+library(learnr)
+knitr::opts_chunk$set(echo = FALSE)
+question <- function(..., randomise = T, retry = T) {
+  learnr::question(..., allow_retry = retry, random_answer_order = randomise)
+}
+```
+
+To load this tutorial, follow the link on canvas.

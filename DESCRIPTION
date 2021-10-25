@@ -4,14 +4,14 @@ Title: Psychology as a Science Tutorials
 Version: 0.1.0
 Authors@R: c(
   person("Lincoln J", "Colling", email = "lincoln@colling.net.nz", role = c("cre")),
-  person("Milan", "Valášek", email = "M.Valasek@sussex.ac.uk", role = c("aut")))
+  person("Milan", "Valášek", email = "M.Valasek@sussex.ac.uk", role = c("aut")),
+  person("Andy", "Field", email = "Andy.Field@sussex.ac.uk", role = c("ctb")))
 Description: This package contains the learnR tutorials for the Psychology
     as a Science course at the University of Sussex.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: 
-    gradethis (>= 0.1.0.9004),
     dplyr,
     magrittr,
     palmerpenguins,
@@ -19,13 +19,7 @@ Imports:
     readr,
     tidyr,
     purrr,
-    here,
-    red (>= 0.1.0),
-    blue (>= 0.1.0)
-Remotes: 
-    rstudio-education/gradethis,
-    ljcolling/red,
-    ljcolling/blue
+    here
 RoxygenNote: 7.1.1
 Depends: 
     R (>= 2.10)
